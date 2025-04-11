@@ -9,7 +9,9 @@ import { fetchCommodityPrice } from '../utils/dataUtils';
 import TopUsesCard from './TopUsesCard';
 import { fetchCommodityUses } from '../utils/dataUtils'; // make sure this is imported
 import { fetchCommodityNews } from '../utils/dataUtils'; // make sure this is imported
+import { fetchLocationSummary } from '../utils/dataUtils';
 import NewsCard from './NewsCard';
+import LocationSummaryCard from './LocationSummaryCard';
 
 const commodities = ['Copper', 'Gold'];
 const locations = ['Chile', 'Ohio'];
@@ -26,6 +28,7 @@ const CopperIntelPOC = () => {
   const [usesSource, setUsesSource] = useState('');
   const [news, setNews] = useState([]);
   const [newsSource, setNewsSource] = useState('');
+  const [locationSummary, setLocationSummary] = useState(null);
 
   const handleSearch = async () => {
     setLoading(true);
@@ -61,6 +64,9 @@ const CopperIntelPOC = () => {
       } else if (view === 1 && selectedLocation) {
         const data = await fetchLocationData(selectedLocation);
         setSummary(data.summary);
+        
+        const locData = await fetchLocationSummary(selectedLocation);
+        setLocationSummary(locData);
         setPrice('');
         setUses([]);
         setUsesSource('');
@@ -70,6 +76,7 @@ const CopperIntelPOC = () => {
       setSummary('Failed to load data.');
       setUses([]);
       setUsesSource('');
+      setLocationSummary(null);
     }
   
     setLoading(false);
@@ -112,11 +119,12 @@ const CopperIntelPOC = () => {
       </Box>
 
       {loading && <CircularProgress sx={{ mt: 2 }} />}
-
       {summary && <SummaryCard summary={summary} price={price} />}
       {uses.length > 0 && <TopUsesCard data={uses} source={usesSource} />}
       {news.length > 0 && <NewsCard articles={news} source={newsSource} />}
       {mapSites.length > 0 && <MiningMap sites={mapSites} />}
+      {locationSummary && <LocationSummaryCard location={selectedLocation} data={locationSummary} />}
+
       <AskAI context={summary} />
 
     </Container>

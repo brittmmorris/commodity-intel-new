@@ -55,3 +55,9 @@ export const fetchCommodityData = async (commodity) => {
     return data;
   };
   
+  export const fetchLocationSummary = async (location) => {
+    const res = await fetch(`/api/location-summary?location=${location}`);
+    const data = await res.json();
+    return data;
+  };
+  
