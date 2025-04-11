@@ -1,28 +1,36 @@
 export default async function handler(req, res) {
   const { symbol } = req.query;
-  const apiKey = process.env.TE_API_KEY;
 
-  if (!symbol || !apiKey) {
-    return res.status(400).json({ error: 'Missing symbol or API key' });
+  // Map user-friendly names to Yahoo symbols
+  const yahooSymbols = {
+    Copper: 'HG=F', // Copper Futures
+    Gold: 'GC=F'    // Gold Futures
+  };
+
+  const yahooSymbol = yahooSymbols[symbol];
+  if (!yahooSymbol) {
+    return res.status(400).json({ error: 'Unsupported symbol. Try Copper or Gold.' });
   }
 
   try {
-    const apiUrl = `https://api.tradingeconomics.com/markets/symbol/${symbol}?c=${apiKey}`;
-    const response = await fetch(apiUrl);
+    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${yahooSymbol}?range=1d&interval=1d`;
+    const response = await fetch(url);
     const data = await response.json();
 
-    if (!data || !Array.isArray(data) || !data[0]?.Last) {
-      return res.status(500).json({ error: 'Invalid response from TradingEconomics', raw: data });
+    const price = data?.chart?.result?.[0]?.meta?.regularMarketPrice;
+
+    if (!price) {
+      return res.status(500).json({ error: 'Failed to extract price from Yahoo' });
     }
 
     res.setHeader('Access-Control-Allow-Origin', '*');
     return res.status(200).json({
-      price: data[0].Last.toFixed(2),
+      price: price.toFixed(2),
       unit: '/ oz',
       symbol
     });
   } catch (err) {
-    console.error('Proxy error:', err);
-    return res.status(500).json({ error: 'Error fetching from TradingEconomics' });
+    console.error('Yahoo proxy error:', err);
+    return res.status(500).json({ error: 'Error fetching from Yahoo' });
   }
 }

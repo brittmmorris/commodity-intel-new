@@ -36,13 +36,7 @@ const CopperIntelPOC = () => {
       if (view === 0 && selectedCommodity) {
         const data = await fetchCommodityData(selectedCommodity);
         setSummary(data.summary);
-        const symbolMap = {
-          Gold: 'XAU',
-          Copper: 'COPPER'
-        };
-        
-        const latestPrice = await fetchCommodityPrice(symbolMap[selectedCommodity]);
-        
+        const latestPrice = await fetchCommodityPrice(selectedCommodity);
         setPrice(latestPrice);
       } else if (view === 1 && selectedLocation) {
         const data = await fetchLocationData(selectedLocation);
