@@ -93,7 +93,24 @@ const CopperIntelPOC = () => {
 
   return (
     <Container maxWidth="lg" sx={{ pt: 4 }}>
-      <Tabs value={view} onChange={(e, v) => setView(v)} centered>
+      <Tabs
+        value={view}
+        onChange={(e, v) => {
+          setView(v);
+          setSelectedCommodity(null);
+          setSelectedLocation(null);
+          setSummary('');
+          setPrice('');
+          setUses([]);
+          setUsesSource('');
+          setNews([]);
+          setNewsSource('');
+          setMapSites([]);
+          setLocationSummary(null);
+          setFacts(null);
+        }}
+        centered
+      >
         <Tab label="By Commodity" />
         <Tab label="By Location" />
       </Tabs>
