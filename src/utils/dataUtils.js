@@ -31,7 +31,8 @@ export const fetchCommodityData = async (commodity) => {
             current: `$${data.price} ${data.unit}`,
             previous: `$${data.previous} ${data.unit}`,
             change: `${data.change >= 0 ? '+' : ''}$${data.change} (${data.changePct}%)`,
-            isPositive: data.change >= 0
+            isPositive: data.change >= 0,
+            history: data.history || []
           }
         : 'N/A';
     } catch (err) {

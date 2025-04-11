@@ -17,8 +17,15 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     const prices = data?.chart?.result?.[0]?.indicators?.quote?.[0]?.close;
+    const timestamps = data?.chart?.result?.[0]?.timestamp;
+
     const current = prices?.[prices.length - 1];
     const previous = prices?.[prices.length - 2];
+
+    const history = prices?.map((p, i) => ({
+      date: new Date(timestamps[i] * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+      value: p?.toFixed(2)
+    })) || [];
 
     if (!current || !previous) {
       return res.status(500).json({ error: 'Price history unavailable' });
@@ -34,7 +41,8 @@ export default async function handler(req, res) {
       change: diff,
       changePct: pctChange,
       unit: '/ oz',
-      symbol
+      symbol,
+      history
     });
   } catch (err) {
     console.error('Yahoo proxy error:', err);
