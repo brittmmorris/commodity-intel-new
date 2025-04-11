@@ -32,3 +32,6 @@ const SummaryCard = ({ summary, price }) => (
     )}
   </Card>
 );
+
+
+export default SummaryCard;
