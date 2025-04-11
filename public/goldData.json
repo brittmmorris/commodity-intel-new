@@ -1,0 +1,14 @@
+{
+    "commodity": "Gold",
+    "year": 2024,
+    "topProducers": [
+      { "country": "China", "production": "380 metric tons" },
+      { "country": "Russia", "production": "310 metric tons" },
+      { "country": "Australia", "production": "290 metric tons" },
+      { "country": "Canada", "production": "200 metric tons" },
+      { "country": "United States", "production": "160 metric tons" }
+    ],
+    "globalProductionTotal": "3,300 metric tons",
+    "source": "USGS Mineral Commodity Summaries 2025"
+  }
+  

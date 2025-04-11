@@ -1,0 +1,14 @@
+{
+    "commodity": "Copper",
+    "year": 2024,
+    "topProducers": [
+      { "country": "Chile", "production": "5,300,000 metric tons" },
+      { "country": "Peru", "production": "2,300,000 metric tons" },
+      { "country": "DR Congo", "production": "2,000,000 metric tons" },
+      { "country": "USA", "production": "1,200,000 metric tons" },
+      { "country": "Russia", "production": "920,000 metric tons" }
+    ],
+    "globalProductionTotal": "22,000,000 metric tons",
+    "source": "USGS Mineral Commodity Summary 2025"
+  }
+  

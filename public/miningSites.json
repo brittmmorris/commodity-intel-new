@@ -1,0 +1,31 @@
+[
+    {
+      "name": "Chuquicamata Mine",
+      "lat": -22.343,
+      "lng": -68.929,
+      "commodity": "Copper",
+      "country": "Chile"
+    },
+    {
+      "name": "Grasberg Mine",
+      "lat": -4.053,
+      "lng": 137.118,
+      "commodity": "Gold",
+      "country": "Indonesia"
+    },
+    {
+      "name": "Morenci Mine",
+      "lat": 33.041,
+      "lng": -109.347,
+      "commodity": "Copper",
+      "country": "USA"
+    },
+    {
+      "name": "Fort Knox Mine",
+      "lat": 64.935,
+      "lng": -147.349,
+      "commodity": "Gold",
+      "country": "USA"
+    }
+  ]
+  
