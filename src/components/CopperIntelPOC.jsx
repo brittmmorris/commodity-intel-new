@@ -7,7 +7,6 @@ import SummaryCard from './SummaryCard';
 import { fetchCommodityData, fetchLocationData, fetchMiningSites } from '../utils/dataUtils';
 import { fetchCommodityPrice } from '../utils/dataUtils';
 import TopUsesCard from './TopUsesCard';
-import { useState } from 'react';
 import { fetchCommodityUses } from '../utils/dataUtils'; // make sure this is imported
 
 const commodities = ['Copper', 'Gold'];
@@ -23,7 +22,9 @@ const CopperIntelPOC = () => {
   const [price, setPrice] = useState('');
   const [uses, setUses] = useState([]);
   const [usesSource, setUsesSource] = useState('');
-  
+  const [news, setNews] = useState([]);
+  const [newsSource, setNewsSource] = useState('');
+
   const handleSearch = async () => {
     setLoading(true);
     setSummary('');
@@ -43,14 +44,18 @@ const CopperIntelPOC = () => {
       if (view === 0 && selectedCommodity) {
         const data = await fetchCommodityData(selectedCommodity);
         setSummary(data.summary);
-  
+      
         const latestPrice = await fetchCommodityPrice(selectedCommodity);
         setPrice(latestPrice);
-  
-        // ✅ Refactored to use utility
+      
         const usesData = await fetchCommodityUses(selectedCommodity);
         setUses(usesData.uses);
         setUsesSource(usesData.source);
+      
+        // ✅ Add this block for recent news
+        const newsData = await fetchCommodityNews(selectedCommodity);
+        setNews(newsData.articles || []);
+        setNewsSource(newsData.source || '');      
       } else if (view === 1 && selectedLocation) {
         const data = await fetchLocationData(selectedLocation);
         setSummary(data.summary);
@@ -108,6 +113,7 @@ const CopperIntelPOC = () => {
 
       {summary && <SummaryCard summary={summary} price={price} />}
       {uses.length > 0 && <TopUsesCard data={uses} source={usesSource} />}
+      {news.length > 0 && <NewsCard articles={news} source={newsSource} />}
       {mapSites.length > 0 && <MiningMap sites={mapSites} />}
       <AskAI context={summary} />
 

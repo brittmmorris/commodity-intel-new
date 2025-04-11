@@ -48,3 +48,10 @@ export const fetchCommodityData = async (commodity) => {
     const data = await res.json();
     return data;
   };
+
+  export const fetchCommodityNews = async (commodity) => {
+    const res = await fetch(`/api/commodity-news?symbol=${commodity}`);
+    const data = await res.json();
+    return data;
+  };
+  
