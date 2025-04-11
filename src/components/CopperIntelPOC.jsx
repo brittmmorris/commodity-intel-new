@@ -12,6 +12,8 @@ import { fetchCommodityNews } from '../utils/dataUtils'; // make sure this is im
 import { fetchLocationSummary } from '../utils/dataUtils';
 import NewsCard from './NewsCard';
 import LocationSummaryCard from './LocationSummaryCard';
+import FactPanelCard from './FactPanelCard';
+import { fetchCommodityFacts } from '../utils/dataUtils';
 
 const commodities = ['Copper', 'Gold'];
 const locations = ['Chile', 'Ohio'];
@@ -29,6 +31,7 @@ const CopperIntelPOC = () => {
   const [news, setNews] = useState([]);
   const [newsSource, setNewsSource] = useState('');
   const [locationSummary, setLocationSummary] = useState(null);
+  const [facts, setFacts] = useState(null);
 
   const handleSearch = async () => {
     setLoading(true);
@@ -60,7 +63,11 @@ const CopperIntelPOC = () => {
         // ✅ Add this block for recent news
         const newsData = await fetchCommodityNews(selectedCommodity);
         setNews(newsData.articles || []);
-        setNewsSource(newsData.source || '');      
+        setNewsSource(newsData.source || '');
+        
+        const factsData = await fetchCommodityFacts(selectedCommodity);
+        setFacts(factsData);
+
       } else if (view === 1 && selectedLocation) {
         const data = await fetchLocationData(selectedLocation);
         setSummary(data.summary);
@@ -70,6 +77,7 @@ const CopperIntelPOC = () => {
         setPrice('');
         setUses([]);
         setUsesSource('');
+        setFacts(null);
       }
     } catch (err) {
       console.error(err);
@@ -124,7 +132,7 @@ const CopperIntelPOC = () => {
       {news.length > 0 && <NewsCard articles={news} source={newsSource} />}
       {mapSites.length > 0 && <MiningMap sites={mapSites} />}
       {locationSummary && <LocationSummaryCard location={selectedLocation} data={locationSummary} />}
-
+      {facts && <FactPanelCard facts={facts} />}
       <AskAI context={summary} />
 
     </Container>
