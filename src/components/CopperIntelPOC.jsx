@@ -8,6 +8,8 @@ import { fetchCommodityData, fetchLocationData, fetchMiningSites } from '../util
 import { fetchCommodityPrice } from '../utils/dataUtils';
 import TopUsesCard from './TopUsesCard';
 import { fetchCommodityUses } from '../utils/dataUtils'; // make sure this is imported
+import { fetchCommodityNews } from '../utils/dataUtils'; // make sure this is imported
+import NewsCard from './NewsCard';
 
 const commodities = ['Copper', 'Gold'];
 const locations = ['Chile', 'Ohio'];

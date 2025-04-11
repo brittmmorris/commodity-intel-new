@@ -1,16 +1,7 @@
-import React from 'react';
-import { Card, Typography } from '@mui/material';
-import { LineChart, Line, YAxis, ResponsiveContainer } from 'recharts';
-
 const SummaryCard = ({ summary, price }) => (
   <Card sx={{ mt: 3, p: 2 }}>
     <Typography variant="h6">Summary:</Typography>
     <Typography>{summary}</Typography>
-    {source && (
-  <Typography variant="caption" sx={{ mt: 2, fontStyle: 'italic' }}>
-    Source: {source}
-  </Typography>
-)}
 
     {price && typeof price === 'object' && (
       <>
@@ -37,14 +28,7 @@ const SummaryCard = ({ summary, price }) => (
             <YAxis domain={['dataMin - 0.1', 'dataMax + 0.1']} hide />
           </LineChart>
         </ResponsiveContainer>
-
       </div>
     )}
-
-    {uses.length > 0 && <TopUsesCard data={uses} source={usesSource} />}
-
-
   </Card>
 );
-
-export default SummaryCard;
