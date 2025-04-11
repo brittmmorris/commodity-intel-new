@@ -36,6 +36,7 @@ const CopperIntelPOC = () => {
         const data = await fetchCommodityData(selectedCommodity);
         setSummary(data.summary);
         const latestPrice = await fetchCommodityPrice(selectedCommodity);
+        debugger
         setPrice(latestPrice);
       } else if (view === 1 && selectedLocation) {
         const data = await fetchLocationData(selectedLocation);
