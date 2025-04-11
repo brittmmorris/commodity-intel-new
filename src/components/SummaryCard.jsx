@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Typography } from '@mui/material';
-import { LineChart, Line, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, YAxis, ResponsiveContainer } from 'recharts';
 
 const SummaryCard = ({ summary, price }) => (
   <Card sx={{ mt: 3, p: 2 }}>
@@ -23,14 +23,16 @@ const SummaryCard = ({ summary, price }) => (
         <ResponsiveContainer width="100%" height={100}>
           <LineChart data={price.history}>
             <Line
-              type="monotone"
+              type="natural"
               dataKey="value"
               stroke={price.isPositive ? 'green' : 'red'}
               strokeWidth={2}
               dot={false}
             />
+            <YAxis domain={['dataMin - 0.1', 'dataMax + 0.1']} hide />
           </LineChart>
         </ResponsiveContainer>
+
       </div>
     )}
 
