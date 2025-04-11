@@ -1,3 +1,7 @@
+import React from 'react';
+import { Card, Typography } from '@mui/material';
+import { LineChart, Line, YAxis, ResponsiveContainer } from 'recharts';
+
 const SummaryCard = ({ summary, price }) => (
   <Card sx={{ mt: 3, p: 2 }}>
     <Typography variant="h6">Summary:</Typography>
