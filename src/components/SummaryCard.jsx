@@ -41,6 +41,9 @@ const SummaryCard = ({ summary, price }) => (
       </div>
     )}
 
+    {uses.length > 0 && <TopUsesCard data={uses} source={usesSource} />}
+
+
   </Card>
 );
 

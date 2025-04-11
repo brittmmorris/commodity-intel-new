@@ -6,6 +6,9 @@ import AskAI from './AskAI';
 import SummaryCard from './SummaryCard';
 import { fetchCommodityData, fetchLocationData, fetchMiningSites } from '../utils/dataUtils';
 import { fetchCommodityPrice } from '../utils/dataUtils';
+import TopUsesCard from './TopUsesCard';
+import { useState } from 'react';
+import { fetchCommodityUses } from '../utils/dataUtils'; // make sure this is imported
 
 const commodities = ['Copper', 'Gold'];
 const locations = ['Chile', 'Ohio'];
@@ -18,11 +21,16 @@ const CopperIntelPOC = () => {
   const [summary, setSummary] = useState('');
   const [mapSites, setMapSites] = useState([]);
   const [price, setPrice] = useState('');
-
+  const [uses, setUses] = useState([]);
+  const [usesSource, setUsesSource] = useState('');
+  
   const handleSearch = async () => {
     setLoading(true);
     setSummary('');
     setMapSites([]);
+    setUses([]);
+    setUsesSource('');
+  
     try {
       const allSites = await fetchMiningSites();
       const filteredSites = allSites.filter(site => {
@@ -31,25 +39,35 @@ const CopperIntelPOC = () => {
           : site.country.toLowerCase() === selectedLocation.toLowerCase();
       });
       setMapSites(filteredSites);
-
+  
       if (view === 0 && selectedCommodity) {
         const data = await fetchCommodityData(selectedCommodity);
         setSummary(data.summary);
+  
         const latestPrice = await fetchCommodityPrice(selectedCommodity);
-        debugger
         setPrice(latestPrice);
+  
+        // ✅ Refactored to use utility
+        const usesData = await fetchCommodityUses(selectedCommodity);
+        setUses(usesData.uses);
+        setUsesSource(usesData.source);
       } else if (view === 1 && selectedLocation) {
         const data = await fetchLocationData(selectedLocation);
         setSummary(data.summary);
         setPrice('');
+        setUses([]);
+        setUsesSource('');
       }
     } catch (err) {
       console.error(err);
       setSummary('Failed to load data.');
+      setUses([]);
+      setUsesSource('');
     }
-
+  
     setLoading(false);
   };
+  
 
   return (
     <Container maxWidth="lg" sx={{ pt: 4 }}>
@@ -89,8 +107,10 @@ const CopperIntelPOC = () => {
       {loading && <CircularProgress sx={{ mt: 2 }} />}
 
       {summary && <SummaryCard summary={summary} price={price} />}
+      {uses.length > 0 && <TopUsesCard data={uses} source={usesSource} />}
       {mapSites.length > 0 && <MiningMap sites={mapSites} />}
       <AskAI context={summary} />
+
     </Container>
   );
 };
