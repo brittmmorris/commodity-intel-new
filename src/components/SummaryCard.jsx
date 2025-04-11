@@ -6,6 +6,11 @@ const SummaryCard = ({ summary, price }) => (
   <Card sx={{ mt: 3, p: 2 }}>
     <Typography variant="h6">Summary:</Typography>
     <Typography>{summary}</Typography>
+    {source && (
+  <Typography variant="caption" sx={{ mt: 2, fontStyle: 'italic' }}>
+    Source: {source}
+  </Typography>
+)}
 
     {price && typeof price === 'object' && (
       <>
