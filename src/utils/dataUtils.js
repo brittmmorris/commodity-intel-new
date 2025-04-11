@@ -20,16 +20,24 @@ export const fetchCommodityData = async (commodity) => {
     return await res.json();
   };
   
-  export const fetchCommodityPrice = async (symbol) => {
-    if (!symbol) return 'N/A';
+  export const fetchCommodityPrice = async (commodity) => {
+    if (!commodity) return 'N/A';
   
     try {
-      const res = await fetch(`https://commodity-intel.vercel.app/api/price?symbol=${symbol}`);
+      const res = await fetch(`/api/price?symbol=${commodity}`);
       const data = await res.json();
-      return data?.price ? `$${data.price} ${data.unit}` : 'N/A';
+      return data?.price
+        ? {
+            current: `$${data.price} ${data.unit}`,
+            previous: `$${data.previous} ${data.unit}`,
+            change: `${data.change >= 0 ? '+' : ''}$${data.change} (${data.changePct}%)`,
+            isPositive: data.change >= 0
+          }
+        : 'N/A';
     } catch (err) {
       console.error('Error fetching price:', err);
       return 'N/A';
     }
   };
+  
   
