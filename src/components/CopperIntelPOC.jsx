@@ -23,7 +23,7 @@ const CopperIntelPOC = () => {
     setLoading(true);
     setSummary('');
     setMapSites([]);
-
+    console.log("test")
     try {
       const allSites = await fetchMiningSites();
       const filteredSites = allSites.filter(site => {
