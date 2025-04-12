@@ -88,7 +88,7 @@ const SummaryCard = ({ summary, price, trendLength, setTrendLength }) => {
               <Line
                 type="monotone"
                 dataKey="value"
-                // stroke={price.isPositive ? 'green' : 'red'}
+                stroke="#1d6ae7"
                 strokeWidth={2}
                 dot
               />
