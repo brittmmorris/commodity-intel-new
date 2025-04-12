@@ -3,14 +3,22 @@ import React, { useState } from 'react';
 import { Box, TextField, Button, Card, Typography } from '@mui/material';
 import { askOpenAI } from '../utils/openaiUtils';
 
-const AskAI = ({ context }) => {
+const AskAI = ({ context,  trendLength }) => {
     const [question, setQuestion] = useState('');
     const [answer, setAnswer] = useState('');
     const [loading, setLoading] = useState(false);
   
     const handleAsk = async () => {
       setLoading(true);
-      const response = await askOpenAI(question, context);
+
+      const prompt = `
+        ${context}
+
+        Based on the ${trendLength}-day price trend, answer the user's question below.
+        User:
+        ${question}
+        `;
+      const response = await askOpenAI(prompt);
       setAnswer(response);
       setLoading(false);
     };

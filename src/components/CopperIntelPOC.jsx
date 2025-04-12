@@ -38,6 +38,7 @@ const CopperIntelPOC = () => {
   const [year, setYear] = useState('2024');
   const years = ['2024', '2023', '2022']; // can expand later
   const [trendData, setTrendData] = useState([]);
+  const [trendLength, setTrendLength] = useState('5d'); // '5d' or '30d'
   
   const handleSearch = async () => {
     setLoading(true);
@@ -64,7 +65,7 @@ const CopperIntelPOC = () => {
 
           setSummary(summaryText);
       
-        const latestPrice = await fetchCommodityPrice(selectedCommodity);
+        const latestPrice = await fetchCommodityPrice(selectedCommodity, trendLength);
         setPrice(latestPrice);
       
         const usesData = await fetchCommodityUses(selectedCommodity);
@@ -174,15 +175,14 @@ const CopperIntelPOC = () => {
       </Box>
 
       {loading && <CircularProgress sx={{ mt: 2 }} />}
-      {summary && <SummaryCard summary={summary} price={price} />}
+      {summary && <SummaryCard summary={summary} price={price} trendLength={trendLength} setTrendLength={setTrendLength} />}
       {uses.length > 0 && <TopUsesCard data={uses} source={usesSource} />}
       {news.length > 0 && <NewsCard articles={news} source={newsSource} />}
       {mapSites.length > 0 && <MiningMap sites={mapSites} />}
       {locationSummary && <LocationSummaryCard location={selectedLocation} data={locationSummary} />}
       {facts && <FactPanelCard facts={facts} />}
       {trendData.length > 0 && <ProductionTrendCard data={trendData} />}
-      <AskAI context={summary} />
-
+      <AskAI context={summary} trendLength={trendLength} />
     </Container>
   );
 };

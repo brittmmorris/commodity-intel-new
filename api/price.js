@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-  const { symbol } = req.query;
+  const { symbol, range = '5d' } = req.query;
 
   const yahooSymbols = {
     Copper: 'HG=F',
@@ -12,7 +12,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${yahooSymbol}?range=5d&interval=1d`;
+    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${yahooSymbol}?range=${range}&interval=1d`;
     const response = await fetch(url);
     const data = await response.json();
 

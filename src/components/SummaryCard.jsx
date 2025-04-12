@@ -11,8 +11,8 @@ import {
   ReferenceArea
 } from 'recharts';
 
-const SummaryCard = ({ summary, price }) => {
-  const [trendLength, setTrendLength] = useState(5);
+const SummaryCard = ({ summary, price, trendLength, setTrendLength }) => {
+  const sliceLength = trendLength === '30d' ? 30 : 5;
 
   return (
     <Card sx={{ mt: 3, p: 2 }}>
@@ -37,21 +37,21 @@ const SummaryCard = ({ summary, price }) => {
 
           <ButtonGroup sx={{ mb: 2 }} variant="outlined" size="small">
             <Button
-              variant={trendLength === 5 ? 'contained' : 'outlined'}
-              onClick={() => setTrendLength(5)}
+              variant={trendLength === '5d' ? 'contained' : 'outlined'}
+              onClick={() => setTrendLength('5d')}
             >
               5-Day
             </Button>
             <Button
-              variant={trendLength === 30 ? 'contained' : 'outlined'}
-              onClick={() => setTrendLength(30)}
+              variant={trendLength === '30d' ? 'contained' : 'outlined'}
+              onClick={() => setTrendLength('30d')}
             >
               30-Day
             </Button>
           </ButtonGroup>
 
           <ResponsiveContainer width="100%" height={220}>
-            <LineChart data={price.history.slice(-trendLength)}>
+            <LineChart data={price.history.slice(-sliceLength)}>
               {price.history.slice(-trendLength).map((d, i, arr) => {
                 if (i === 0) return null;
                 const prev = arr[i - 1];

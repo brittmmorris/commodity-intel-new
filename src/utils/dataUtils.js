@@ -15,11 +15,11 @@ export const fetchLocationData = async (location, year = '2024') => {
     return await res.json();
   };
   
-  export const fetchCommodityPrice = async (commodity) => {
+  export const fetchCommodityPrice = async (commodity, range = '5d') => {
     if (!commodity) return 'N/A';
   
     try {
-      const res = await fetch(`/api/price?symbol=${commodity}`);
+      const res = await fetch(`/api/price?symbol=${commodity}&range=${range}`);
       const data = await res.json();
       return data?.price
         ? {
