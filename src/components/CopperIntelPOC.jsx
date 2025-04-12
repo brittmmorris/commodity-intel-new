@@ -194,6 +194,8 @@ const CopperIntelPOC = () => {
             <TopUsesCard data={uses} source={usesSource} />
           </Grid>
         )}
+        </Grid>
+        <Grid container spacing={2} mt={2}>
         {news.length > 0 && (
           <Grid item xs={12} md={6}>
             <NewsCard articles={news} source={newsSource} />
