@@ -18,22 +18,30 @@ const SummaryCard = ({ summary, price }) => (
     )}
 
     {price?.history?.length > 0 && (
-      <div style={{ marginTop: 16 }}>
-        <strong>5-Day Trend:</strong>
-        <ResponsiveContainer width="100%" height={100}>
+      <Box mt={4}>
+        <Typography variant="subtitle1" gutterBottom>
+          5-Day Price Trend
+        </Typography>
+        <ResponsiveContainer width="100%" height={200}>
           <LineChart data={price.history}>
+            <XAxis dataKey="date" />
+            <YAxis domain={['auto', 'auto']} />
+            <Tooltip
+              formatter={(value) => `$${value.toFixed(2)}`}
+              labelFormatter={(label) => `Date: ${label}`}
+            />
             <Line
-              type="natural"
+              type="monotone"
               dataKey="value"
               stroke={price.isPositive ? 'green' : 'red'}
               strokeWidth={2}
-              dot={false}
+              dot={true}
             />
-            <YAxis domain={['dataMin - 0.1', 'dataMax + 0.1']} hide />
           </LineChart>
         </ResponsiveContainer>
-      </div>
+      </Box>
     )}
+
   </Card>
 );
 
