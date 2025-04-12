@@ -11,6 +11,7 @@ import {
   CircularProgress,
   Grid,
   MenuItem,
+  Stack
 } from '@mui/material';
 import MiningMap from './MiningMap';
 import AskAI from './AskAI';
@@ -181,50 +182,26 @@ const CopperIntelPOC = () => {
       {loading && <CircularProgress sx={{ mt: 2 }} />}
 
       {summary && (
-        <Grid container spacing={2} mt={2}>
-          <Grid item xs={12}>
             <SummaryCard
               summary={summary}
               price={price}
               trendLength={trendLength}
               setTrendLength={setTrendLength}
             />
-          </Grid>
-        </Grid>
       )}
 
-      <Grid container spacing={2} mt={2}>
-        {facts && (
-          <Grid item xs={12} md={3}>
-            <FactPanelCard facts={facts} />
-          </Grid>
-        )}
-        {uses.length > 0 && (
-          <Grid item xs={12} md={3}>
-            <TopUsesCard data={uses} source={usesSource} />
-          </Grid>
-        )}
-        {news.length > 0 && (
-          <Grid item xs={12} md={3}>
-            <NewsCard articles={news} source={newsSource} />
-          </Grid>
-        )}
-        {trendData.length > 0 && (
-          <Grid item xs={12} md={3}>
-            <ProductionTrendCard data={trendData} />
-          </Grid>
-        )}
-      </Grid>
+<Stack direction="row" spacing={2} flexWrap="wrap" useFlexGap mt={2}>
+  {facts && <Box flex={1} minWidth={300}><FactPanelCard facts={facts} /></Box>}
+  {uses.length > 0 && <Box flex={1} minWidth={300}><TopUsesCard data={uses} source={usesSource} /></Box>}
+  {news.length > 0 && <Box flex={1} minWidth={300}><NewsCard articles={news} source={newsSource} /></Box>}
+  {trendData.length > 0 && <Box flex={1} minWidth={300}><ProductionTrendCard data={trendData} /></Box>}
+</Stack>
       {mapSites.length > 0 && (
             <MiningMap sites={mapSites} />
         )}
 
       {locationSummary && (
-        <Grid container spacing={2} mt={2}>
-          <Grid item xs={12}>
             <LocationSummaryCard location={selectedLocation} data={locationSummary} />
-          </Grid>
-        </Grid>
       )}
 
       <AskAI context={summary} trendLength={trendLength} />
