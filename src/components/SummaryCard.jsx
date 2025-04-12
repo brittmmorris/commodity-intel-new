@@ -88,7 +88,7 @@ const SummaryCard = ({ summary, price, trendLength, setTrendLength }) => {
               <Line
                 type="monotone"
                 dataKey="value"
-                stroke="#1d6ae7"
+                stroke="#1d6ae7" // Frosty Blue ✅
                 strokeWidth={2}
                 dot
               />
