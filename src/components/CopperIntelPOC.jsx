@@ -175,27 +175,28 @@ const CopperIntelPOC = () => {
           {summary && <SummaryCard summary={summary} price={price} trendLength={trendLength} setTrendLength={setTrendLength} />}
         </Grid>
       </Grid>
-      < Grid>
-        <Grid item xs={12} md={4}>
-          {facts && <FactPanelCard facts={facts} />}
-        </Grid>
-        <Grid item xs={12} md={4}>
-          {uses.length > 0 && <TopUsesCard data={uses} source={usesSource} />}
-        </Grid>
-        <Grid item xs={12} md={4}>
-          {news.length > 0 && <NewsCard articles={news} source={newsSource} />}
-        </Grid>
-      </Grid>
 
-      <Grid>
-        <Grid item xs={12} md={6}>
-        {mapSites.length > 0 && <MiningMap sites={mapSites} />}
+      <Grid container spacing={2} mt={2}>
+  <Grid item xs={12} md={4}>
+    {facts && <FactPanelCard facts={facts} />}
+  </Grid>
+  <Grid item xs={12} md={4}>
+    {uses.length > 0 && <TopUsesCard data={uses} source={usesSource} />}
+  </Grid>
+  <Grid item xs={12} md={4}>
+    {news.length > 0 && <NewsCard articles={news} source={newsSource} />}
+  </Grid>
+</Grid>
 
-        </Grid>
-        <Grid item xs={12} md={6}>
-          {trendData.length > 0 && <ProductionTrendCard data={trendData} />}
-        </Grid>
-      </Grid>
+<Grid container spacing={2} mt={2}>
+  <Grid item xs={12} md={6}>
+    {mapSites.length > 0 && <MiningMap sites={mapSites} />}
+  </Grid>
+  <Grid item xs={12} md={6}>
+    {trendData.length > 0 && <ProductionTrendCard data={trendData} />}
+  </Grid>
+</Grid>
+
       
       {locationSummary && <LocationSummaryCard location={selectedLocation} data={locationSummary} />}
       <AskAI context={summary} trendLength={trendLength} />
