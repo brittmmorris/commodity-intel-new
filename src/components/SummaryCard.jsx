@@ -1,5 +1,4 @@
 import React from 'react';
-import { useState } from 'react';
 import { Box, Button, ButtonGroup, Typography, Card } from '@mui/material';
 import {
   ResponsiveContainer,
@@ -8,12 +7,15 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  ReferenceArea
+  ReferenceArea,
 } from 'recharts';
 
 const SummaryCard = ({ summary, price, trendLength, setTrendLength }) => {
   const sliceLength = trendLength === '30d' ? 30 : 5;
-  const sliced = price.history.slice(-sliceLength).map((d, i) => ({ ...d, index: i }));
+  const hasHistory = Array.isArray(price?.history) && price.history.length > 0;
+  const sliced = hasHistory
+    ? price.history.slice(-sliceLength).map((d, i) => ({ ...d, index: i }))
+    : [];
 
   return (
     <Card sx={{ mt: 3, p: 2 }}>
@@ -75,10 +77,8 @@ const SummaryCard = ({ summary, price, trendLength, setTrendLength }) => {
               <Tooltip
                 formatter={(value, name, props) => {
                   if (typeof value !== 'number') return [`$${value}`, 'Price'];
-
                   const base = props.payload?.base;
                   const pct = base ? ((value - base) / base * 100).toFixed(2) : null;
-
                   return pct
                     ? [`$${value.toFixed(2)} (+${pct}%)`, 'Price']
                     : [`$${value.toFixed(2)}`, 'Price'];
