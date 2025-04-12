@@ -185,27 +185,18 @@ const CopperIntelPOC = () => {
 
       <Grid container spacing={2} mt={2}>
         {facts && (
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={6}>
             <FactPanelCard facts={facts} />
           </Grid>
         )}
         {uses.length > 0 && (
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={6}>
             <TopUsesCard data={uses} source={usesSource} />
           </Grid>
         )}
         {news.length > 0 && (
-          <Grid item xs={12} md={4}>
-            <NewsCard articles={news} source={newsSource} />
-          </Grid>
-        )}
-      </Grid>
-
-        <MiningMap sites={mapSites} />
-      <Grid container spacing={2} mt={2}>
-        {mapSites.length > 0 && (
           <Grid item xs={12} md={6}>
-            <MiningMap sites={mapSites} />
+            <NewsCard articles={news} source={newsSource} />
           </Grid>
         )}
         {trendData.length > 0 && (
@@ -215,6 +206,8 @@ const CopperIntelPOC = () => {
         )}
       </Grid>
 
+        <MiningMap sites={mapSites} />
+
       {locationSummary && (
         <Grid container spacing={2} mt={2}>
           <Grid item xs={12}>
@@ -223,11 +216,7 @@ const CopperIntelPOC = () => {
         </Grid>
       )}
 
-      <Grid container spacing={2} mt={2}>
-        <Grid item xs={12}>
-          <AskAI context={summary} trendLength={trendLength} />
-        </Grid>
-      </Grid>
+      <AskAI context={summary} trendLength={trendLength} />
 
     </Container>
   );
