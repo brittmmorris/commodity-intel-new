@@ -13,6 +13,7 @@ import {
 
 const SummaryCard = ({ summary, price, trendLength, setTrendLength }) => {
   const sliceLength = trendLength === '30d' ? 30 : 5;
+  const sliced = price.history.slice(-sliceLength).map((d, i) => ({ ...d, index: i }));
 
   return (
     <Card sx={{ mt: 3, p: 2 }}>
@@ -29,7 +30,7 @@ const SummaryCard = ({ summary, price, trendLength, setTrendLength }) => {
         </>
       )}
 
-      {price?.history?.length > 0 && (
+      {sliced.length > 0 && (
         <Box mt={4}>
           <Typography variant="subtitle1" gutterBottom>
             Price Trend
@@ -51,24 +52,26 @@ const SummaryCard = ({ summary, price, trendLength, setTrendLength }) => {
           </ButtonGroup>
 
           <ResponsiveContainer width="100%" height={220}>
-            <LineChart data={price.history.slice(-sliceLength)}>
-              {price.history.slice(-trendLength).map((d, i, arr) => {
+            <LineChart data={sliced}>
+              <XAxis dataKey="date" />
+              <XAxis xAxisId="index" dataKey="index" hide />
+              <YAxis domain={['auto', 'auto']} />
+
+              {sliced.map((d, i, arr) => {
                 if (i === 0) return null;
                 const prev = arr[i - 1];
-                return d.value > prev.value ? (
+                return (
                   <ReferenceArea
                     key={i}
-                    x1={prev.date}
-                    x2={d.date}
-                    fill='red'
-                    // fill={d.value > prev.value ? 'green' : 'red'}
+                    x1={i - 1}
+                    x2={i}
+                    xAxisId="index"
+                    fill={d.value > prev.value ? 'green' : 'red'}
                     fillOpacity={0.06}
                   />
-                ) : null;
+                );
               })}
 
-              <XAxis dataKey="date" />
-              <YAxis domain={['auto', 'auto']} />
               <Tooltip
                 formatter={(value, name, props) => {
                   if (typeof value !== 'number') return [`$${value}`, 'Price'];
@@ -96,7 +99,5 @@ const SummaryCard = ({ summary, price, trendLength, setTrendLength }) => {
     </Card>
   );
 };
-
-
 
 export default SummaryCard;
