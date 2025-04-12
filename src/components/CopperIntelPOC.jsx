@@ -7,8 +7,8 @@ import SummaryCard from './SummaryCard';
 import { fetchCommodityData, fetchLocationData, fetchMiningSites } from '../utils/dataUtils';
 import { fetchCommodityPrice } from '../utils/dataUtils';
 import TopUsesCard from './TopUsesCard';
-import { fetchCommodityUses } from '../utils/dataUtils'; // make sure this is imported
-import { fetchCommodityNews } from '../utils/dataUtils'; // make sure this is imported
+import { fetchCommodityUses } from '../utils/dataUtils';
+import { fetchCommodityNews } from '../utils/dataUtils';
 import { fetchLocationSummary } from '../utils/dataUtils';
 import NewsCard from './NewsCard';
 import LocationSummaryCard from './LocationSummaryCard';
@@ -16,7 +16,6 @@ import FactPanelCard from './FactPanelCard';
 import { fetchCommodityFacts } from '../utils/dataUtils';
 import ProductionTrendCard from './ProductionTrendCard';
 import { fetchCommodityHistory } from '../utils/dataUtils';
-
 
 const commodities = ['Copper', 'Gold'];
 const locations = ['Chile', 'Ohio'];
@@ -36,17 +35,17 @@ const CopperIntelPOC = () => {
   const [locationSummary, setLocationSummary] = useState(null);
   const [facts, setFacts] = useState(null);
   const [year, setYear] = useState('2024');
-  const years = ['2024', '2023', '2022']; // can expand later
+  const years = ['2024', '2023', '2022'];
   const [trendData, setTrendData] = useState([]);
-  const [trendLength, setTrendLength] = useState('5d'); // '5d' or '30d'
-  
+  const [trendLength, setTrendLength] = useState('5d');
+
   const handleSearch = async () => {
     setLoading(true);
     setSummary('');
     setMapSites([]);
     setUses([]);
     setUsesSource('');
-  
+
     try {
       const allSites = await fetchMiningSites();
       const filteredSites = allSites.filter(site => {
@@ -55,28 +54,23 @@ const CopperIntelPOC = () => {
           : site.country.toLowerCase() === selectedLocation.toLowerCase();
       });
       setMapSites(filteredSites);
-  
+
       if (view === 0 && selectedCommodity) {
         const data = await fetchCommodityData(selectedCommodity, year);
-        const summaryText = `In ${data.year}, global ${data.commodity.toLowerCase()} production was ${data.globalProductionTotal}. 
-          Top producers: ${data.topProducers
-            .map((p) => `${p.country} (${p.production})`)
-            .join(', ')}.`;
+        const summaryText = `In ${data.year}, global ${data.commodity.toLowerCase()} production was ${data.globalProductionTotal}. Top producers: ${data.topProducers.map((p) => `${p.country} (${p.production})`).join(', ')}.`;
+        setSummary(summaryText);
 
-          setSummary(summaryText);
-      
         const latestPrice = await fetchCommodityPrice(selectedCommodity, trendLength);
         setPrice(latestPrice);
-      
+
         const usesData = await fetchCommodityUses(selectedCommodity);
         setUses(usesData.uses);
         setUsesSource(usesData.source);
-      
-        // ✅ Add this block for recent news
+
         const newsData = await fetchCommodityNews(selectedCommodity);
         setNews(newsData.articles || []);
         setNewsSource(newsData.source || '');
-        
+
         const factsData = await fetchCommodityFacts(selectedCommodity);
         setFacts(factsData);
 
@@ -86,7 +80,7 @@ const CopperIntelPOC = () => {
       } else if (view === 1 && selectedLocation) {
         const data = await fetchLocationData(selectedLocation, year);
         setSummary(data.summary);
-        
+
         const locData = await fetchLocationSummary(selectedLocation);
         setLocationSummary(locData);
         setPrice('');
@@ -101,10 +95,9 @@ const CopperIntelPOC = () => {
       setUsesSource('');
       setLocationSummary(null);
     }
-  
+
     setLoading(false);
   };
-  
 
   return (
     <Container maxWidth="lg" sx={{ pt: 4 }}>
@@ -130,20 +123,21 @@ const CopperIntelPOC = () => {
         <Tab label="By Commodity" />
         <Tab label="By Location" />
       </Tabs>
+
       <Box mt={2}>
-      <TextField
-        select
-        label="Select a Year"
-        value={year}
-        onChange={(e) => setYear(e.target.value)}
-        fullWidth
-      >
-        {years.map((option) => (
-          <MenuItem key={option} value={option}>
-            {option}
-          </MenuItem>
-        ))}
-      </TextField>
+        <TextField
+          select
+          label="Select a Year"
+          value={year}
+          onChange={(e) => setYear(e.target.value)}
+          fullWidth
+        >
+          {years.map((option) => (
+            <MenuItem key={option} value={option}>
+              {option}
+            </MenuItem>
+          ))}
+        </TextField>
       </Box>
 
       <Box mt={3}>
@@ -175,12 +169,20 @@ const CopperIntelPOC = () => {
       </Box>
 
       {loading && <CircularProgress sx={{ mt: 2 }} />}
-      {summary && <SummaryCard summary={summary} price={price} trendLength={trendLength} setTrendLength={setTrendLength} />}
+
+      <Grid container spacing={2} mt={2}>
+        <Grid item xs={12} md={8}>
+          {summary && <SummaryCard summary={summary} price={price} trendLength={trendLength} setTrendLength={setTrendLength} />}
+        </Grid>
+        <Grid item xs={12} md={4}>
+          {facts && <FactPanelCard facts={facts} />}
+        </Grid>
+      </Grid>
+
       {uses.length > 0 && <TopUsesCard data={uses} source={usesSource} />}
       {news.length > 0 && <NewsCard articles={news} source={newsSource} />}
       {mapSites.length > 0 && <MiningMap sites={mapSites} />}
       {locationSummary && <LocationSummaryCard location={selectedLocation} data={locationSummary} />}
-      {facts && <FactPanelCard facts={facts} />}
       {trendData.length > 0 && <ProductionTrendCard data={trendData} />}
       <AskAI context={summary} trendLength={trendLength} />
     </Container>
