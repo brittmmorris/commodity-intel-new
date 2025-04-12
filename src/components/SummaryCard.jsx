@@ -17,6 +17,16 @@ const SummaryCard = ({ summary, price, trendLength, setTrendLength }) => {
     ? price.history.slice(-sliceLength).map((d, i) => ({ ...d, index: i }))
     : [];
 
+  const risingLine = sliced.map((d, i, arr) => {
+    if (i === 0 || d.value <= arr[i - 1].value) return { ...d, value: null };
+    return d;
+  });
+
+  const fallingLine = sliced.map((d, i, arr) => {
+    if (i === 0 || d.value > arr[i - 1].value) return { ...d, value: null };
+    return d;
+  });
+
   return (
     <Card sx={{ mt: 3, p: 2 }}>
       <Typography variant="h6">Summary:</Typography>
@@ -24,8 +34,12 @@ const SummaryCard = ({ summary, price, trendLength, setTrendLength }) => {
 
       {price && typeof price === 'object' && (
         <>
-          <Typography sx={{ mt: 2 }}><strong>Current Price:</strong> {price.current}</Typography>
-          <Typography><strong>Yesterday:</strong> {price.previous}</Typography>
+          <Typography sx={{ mt: 2 }}>
+            <strong>Current Price:</strong> {price.current}
+          </Typography>
+          <Typography>
+            <strong>Yesterday:</strong> {price.previous}
+          </Typography>
           <Typography sx={{ color: price.isPositive ? 'green' : 'red' }}>
             <strong>Change:</strong> {price.change}
           </Typography>
@@ -85,12 +99,22 @@ const SummaryCard = ({ summary, price, trendLength, setTrendLength }) => {
                 }}
                 labelFormatter={(label) => `Date: ${label}`}
               />
+
               <Line
                 type="monotone"
+                data={risingLine}
                 dataKey="value"
-                stroke={price.isPositive ? 'green' : 'red'}
+                stroke="green"
                 strokeWidth={2}
-                dot
+                dot={false}
+              />
+              <Line
+                type="monotone"
+                data={fallingLine}
+                dataKey="value"
+                stroke="red"
+                strokeWidth={2}
+                dot={false}
               />
             </LineChart>
           </ResponsiveContainer>
