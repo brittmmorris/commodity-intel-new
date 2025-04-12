@@ -1,6 +1,17 @@
 // components/CopperIntelPOC.jsx
 import React, { useState } from 'react';
-import { Container, Tabs, Tab, Box, Autocomplete, TextField, Button, CircularProgress, Grid, MenuItem } from '@mui/material';
+import {
+  Container,
+  Tabs,
+  Tab,
+  Box,
+  Autocomplete,
+  TextField,
+  Button,
+  CircularProgress,
+  Grid,
+  MenuItem,
+} from '@mui/material';
 import MiningMap from './MiningMap';
 import AskAI from './AskAI';
 import SummaryCard from './SummaryCard';
@@ -76,7 +87,6 @@ const CopperIntelPOC = () => {
 
         const trend = await fetchCommodityHistory(selectedCommodity);
         setTrendData(trend);
-
       } else if (view === 1 && selectedLocation) {
         const data = await fetchLocationData(selectedLocation, year);
         setSummary(data.summary);
@@ -170,18 +180,18 @@ const CopperIntelPOC = () => {
 
       {loading && <CircularProgress sx={{ mt: 2 }} />}
 
-      <Grid container spacing={2} mt={2}>
-        <Grid item xs={12}>
-          {summary && (
+      {summary && (
+        <Grid container spacing={2} mt={2}>
+          <Grid item xs={12}>
             <SummaryCard
               summary={summary}
               price={price}
               trendLength={trendLength}
               setTrendLength={setTrendLength}
             />
-          )}
+          </Grid>
         </Grid>
-      </Grid>
+      )}
 
       <Grid container spacing={2} mt={2}>
         {facts && (
@@ -194,8 +204,6 @@ const CopperIntelPOC = () => {
             <TopUsesCard data={uses} source={usesSource} />
           </Grid>
         )}
-        </Grid>
-        <Grid container spacing={2} mt={2}>
         {news.length > 0 && (
           <Grid item xs={12} md={6}>
             <NewsCard articles={news} source={newsSource} />
@@ -206,9 +214,12 @@ const CopperIntelPOC = () => {
             <ProductionTrendCard data={trendData} />
           </Grid>
         )}
+        {mapSites.length > 0 && (
+          <Grid item xs={12}>
+            <MiningMap sites={mapSites} />
+          </Grid>
+        )}
       </Grid>
-
-        <MiningMap sites={mapSites} />
 
       {locationSummary && (
         <Grid container spacing={2} mt={2}>
@@ -219,7 +230,6 @@ const CopperIntelPOC = () => {
       )}
 
       <AskAI context={summary} trendLength={trendLength} />
-
     </Container>
   );
 };
