@@ -3,7 +3,7 @@ export const askOpenAI = async (prompt) => {
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+      'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_KEY}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -53,7 +53,7 @@ export const streamOpenAI = async (prompt, onData) => {
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+      'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_KEY}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
