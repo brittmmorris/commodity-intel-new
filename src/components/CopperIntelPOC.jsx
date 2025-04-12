@@ -1,6 +1,6 @@
 // components/CopperIntelPOC.jsx
 import React, { useState } from 'react';
-import { Container, Tabs, Tab, Box, Autocomplete, TextField, Button, CircularProgress, Grid } from '@mui/material';
+import { Container, Tabs, Tab, Box, Autocomplete, TextField, Button, CircularProgress, Grid, MenuItem } from '@mui/material';
 import MiningMap from './MiningMap';
 import AskAI from './AskAI';
 import SummaryCard from './SummaryCard';
@@ -130,20 +130,19 @@ const CopperIntelPOC = () => {
         <Tab label="By Location" />
       </Tabs>
       <Box mt={2}>
-        <TextField
-          select
-          label="Select a Year"
-          value={year}
-          onChange={(e) => setYear(e.target.value)}
-          native
-          fullWidth
-        >
-          {years.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </TextField>
+      <TextField
+        select
+        label="Select a Year"
+        value={year}
+        onChange={(e) => setYear(e.target.value)}
+        fullWidth
+      >
+        {years.map((option) => (
+          <MenuItem key={option} value={option}>
+            {option}
+          </MenuItem>
+        ))}
+      </TextField>
       </Box>
 
       <Box mt={3}>
