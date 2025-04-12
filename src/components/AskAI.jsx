@@ -4,13 +4,12 @@ import {
   TextField,
   Typography,
   Avatar,
-  CircularProgress,
   Card,
   Stack,
   IconButton,
 } from '@mui/material';
-import { askOpenAI } from '../utils/openaiUtils';
 import SendIcon from '@mui/icons-material/Send';
+import { streamOpenAI } from '../utils/openaiUtils';
 
 const AskAI = ({ context, trendLength }) => {
   const [input, setInput] = useState('');
@@ -20,22 +19,20 @@ const AskAI = ({ context, trendLength }) => {
   const handleAsk = async () => {
     if (!input.trim()) return;
 
+    const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
     const userMessage = {
       sender: 'user',
       text: input,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      timestamp,
     };
 
-    const typingMessage = {
+    setMessages(prev => [...prev, userMessage, {
       sender: 'ai',
-      text: '...',
-      timestamp: '',
+      text: '',
+      timestamp: '', // Will update later
       loading: true,
-    };
-
-    setMessages(prev => [...prev, userMessage, typingMessage]);
-    setInput('');
-    setLoading(true);
+    }]);
 
     const prompt = `
       ${context}
@@ -44,27 +41,22 @@ const AskAI = ({ context, trendLength }) => {
       ${input}
     `;
 
-    const fullResponse = await askOpenAI(prompt);
+    setInput('');
+    setLoading(true);
 
-    // Simulate typing effect
-    let displayedText = '';
-    const streamSpeed = 20; // ms per character
-    const chars = fullResponse.split('');
-    const updateIndex = messages.length + 1;
-
-    for (let i = 0; i <= chars.length; i++) {
-      await new Promise(resolve => setTimeout(resolve, streamSpeed));
-      displayedText = chars.slice(0, i).join('');
+    let streamedText = '';
+    await streamOpenAI(prompt, (chunk) => {
+      streamedText += chunk;
       setMessages(prev => {
         const updated = [...prev];
-        updated[updateIndex] = {
+        updated[updated.length - 1] = {
           sender: 'ai',
-          text: displayedText,
+          text: streamedText,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         };
         return updated;
       });
-    }
+    });
 
     setLoading(false);
   };
@@ -100,7 +92,7 @@ const AskAI = ({ context, trendLength }) => {
               }}
             >
               <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap' }}>
-                {msg.text}
+                {msg.text || '...'}
               </Typography>
               {msg.timestamp && (
                 <Typography variant="caption" sx={{ display: 'block', mt: 0.5, color: 'gray' }}>
@@ -110,7 +102,7 @@ const AskAI = ({ context, trendLength }) => {
             </Box>
           </Stack>
         ))}
-        {loading && (
+        {loading && messages.length === 0 && (
           <Typography variant="body2" sx={{ color: 'gray', fontStyle: 'italic' }}>
             AI is typing...
           </Typography>
