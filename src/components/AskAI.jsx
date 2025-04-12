@@ -4,11 +4,12 @@ import {
   TextField,
   Typography,
   Avatar,
+  CircularProgress,
   Card,
   Stack,
   IconButton,
 } from '@mui/material';
-import { streamOpenAI } from '../utils/openaiUtils'; // NEW: streaming version
+import { askOpenAI } from '../utils/openaiUtils';
 import SendIcon from '@mui/icons-material/Send';
 
 const AskAI = ({ context, trendLength }) => {
@@ -19,22 +20,20 @@ const AskAI = ({ context, trendLength }) => {
   const handleAsk = async () => {
     if (!input.trim()) return;
 
-    const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
     const userMessage = {
       sender: 'user',
       text: input,
-      timestamp,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     };
 
-    const aiMessage = {
+    const typingMessage = {
       sender: 'ai',
-      text: '',
+      text: '...',
       timestamp: '',
+      loading: true,
     };
 
-    const newIndex = messages.length + 1;
-    setMessages(prev => [...prev, userMessage, aiMessage]);
+    setMessages(prev => [...prev, userMessage, typingMessage]);
     setInput('');
     setLoading(true);
 
@@ -45,29 +44,23 @@ const AskAI = ({ context, trendLength }) => {
       ${input}
     `;
 
-    let streamedText = '';
+    const fullResponse = await askOpenAI(prompt);
 
-    try {
-      await streamOpenAI(prompt, (chunk) => {
-        streamedText += chunk;
-        setMessages(prev => {
-          const updated = [...prev];
-          updated[newIndex] = {
-            ...aiMessage,
-            text: streamedText,
-            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          };
-          return updated;
-        });
-      });
-    } catch (err) {
-      console.error(err);
+    // Simulate typing effect
+    let displayedText = '';
+    const streamSpeed = 20; // ms per character
+    const chars = fullResponse.split('');
+    const updateIndex = messages.length + 1;
+
+    for (let i = 0; i <= chars.length; i++) {
+      await new Promise(resolve => setTimeout(resolve, streamSpeed));
+      displayedText = chars.slice(0, i).join('');
       setMessages(prev => {
         const updated = [...prev];
-        updated[newIndex] = {
-          ...aiMessage,
-          text: 'Something went wrong while getting a response.',
-          timestamp,
+        updated[updateIndex] = {
+          sender: 'ai',
+          text: displayedText,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         };
         return updated;
       });
