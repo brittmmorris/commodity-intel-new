@@ -1,91 +1,147 @@
 import React, { useState } from 'react';
-import { Box, TextField, Button, Card, Typography, CircularProgress, Stack } from '@mui/material';
-import { askOpenAI } from '../utils/openaiUtils';
+import {
+  Box,
+  TextField,
+  Typography,
+  Avatar,
+  Card,
+  Stack,
+  IconButton,
+} from '@mui/material';
+import { streamOpenAI } from '../utils/openaiUtils'; // NEW: streaming version
+import SendIcon from '@mui/icons-material/Send';
 
 const AskAI = ({ context, trendLength }) => {
-  const [question, setQuestion] = useState('');
-  const [chatHistory, setChatHistory] = useState([]);
+  const [input, setInput] = useState('');
+  const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const handleAsk = async () => {
-    if (!question.trim()) return;
+    if (!input.trim()) return;
+
+    const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    const userMessage = {
+      sender: 'user',
+      text: input,
+      timestamp,
+    };
+
+    const aiMessage = {
+      sender: 'ai',
+      text: '',
+      timestamp: '',
+    };
+
+    const newIndex = messages.length + 1;
+    setMessages(prev => [...prev, userMessage, aiMessage]);
+    setInput('');
     setLoading(true);
 
     const prompt = `
       ${context}
-
       Based on the ${trendLength}-day price trend, answer the user's question below.
       User:
-      ${question}
+      ${input}
     `;
 
-    const response = await askOpenAI(prompt);
-    setChatHistory((prev) => [...prev, { question, answer: response }]);
-    setQuestion('');
+    let streamedText = '';
+
+    try {
+      await streamOpenAI(prompt, (chunk) => {
+        streamedText += chunk;
+        setMessages(prev => {
+          const updated = [...prev];
+          updated[newIndex] = {
+            ...aiMessage,
+            text: streamedText,
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          };
+          return updated;
+        });
+      });
+    } catch (err) {
+      console.error(err);
+      setMessages(prev => {
+        const updated = [...prev];
+        updated[newIndex] = {
+          ...aiMessage,
+          text: 'Something went wrong while getting a response.',
+          timestamp,
+        };
+        return updated;
+      });
+    }
+
     setLoading(false);
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleAsk();
+    }
+  };
+
   return (
-    <Card sx={{ mt: 4, p: 2 }}>
-      <Typography variant="h6" gutterBottom>
-        Ask AI
-      </Typography>
-
-      <Box
-        sx={{
-          maxHeight: 300,
-          overflowY: 'auto',
-          mb: 2,
-          px: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 2,
-        }}
-      >
-        {chatHistory.map((entry, i) => (
-          <Box key={i}>
-            <Card variant="outlined" sx={{ p: 1, mb: 1, backgroundColor: '#f5f5f5' }}>
-              <Typography variant="body2" fontWeight="bold">
-                You:
+    <Box mt={4}>
+      <Card sx={{ p: 2, minHeight: 200, maxHeight: 300, overflowY: 'auto' }}>
+        {messages.map((msg, index) => (
+          <Stack
+            key={index}
+            direction="row"
+            spacing={2}
+            alignItems="flex-start"
+            mb={2}
+            sx={{ flexDirection: msg.sender === 'user' ? 'row-reverse' : 'row' }}
+          >
+            <Avatar sx={{ bgcolor: msg.sender === 'user' ? 'primary.main' : 'secondary.main' }}>
+              {msg.sender === 'user' ? 'U' : 'A'}
+            </Avatar>
+            <Box
+              sx={{
+                bgcolor: msg.sender === 'user' ? '#e3f2fd' : '#f1f8e9',
+                borderRadius: 2,
+                p: 1.5,
+                maxWidth: '75%',
+              }}
+            >
+              <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap' }}>
+                {msg.text}
               </Typography>
-              <Typography variant="body2">{entry.question}</Typography>
-            </Card>
-            <Card variant="outlined" sx={{ p: 1, backgroundColor: '#EAF3FF' }}>
-              <Typography variant="body2" fontWeight="bold">
-                AI:
-              </Typography>
-              <Typography variant="body2">{entry.answer}</Typography>
-            </Card>
-          </Box>
+              {msg.timestamp && (
+                <Typography variant="caption" sx={{ display: 'block', mt: 0.5, color: 'gray' }}>
+                  {msg.timestamp}
+                </Typography>
+              )}
+            </Box>
+          </Stack>
         ))}
-
         {loading && (
-          <Box sx={{ pl: 1 }}>
-            <Card variant="outlined" sx={{ p: 1, backgroundColor: '#EAF3FF' }}>
-              <Typography variant="body2" fontWeight="bold">
-                AI:
-              </Typography>
-              <Typography variant="body2">
-                <span className="typing">...</span>
-              </Typography>
-            </Card>
-          </Box>
+          <Typography variant="body2" sx={{ color: 'gray', fontStyle: 'italic' }}>
+            AI is typing...
+          </Typography>
         )}
-      </Box>
+      </Card>
 
-      <Stack direction="row" spacing={1}>
+      <Box display="flex" alignItems="center" mt={2}>
         <TextField
-          label="Ask a question about the data"
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
           fullWidth
-          onKeyDown={(e) => e.key === 'Enter' && !loading && handleAsk()}
+          label="Ask a question about the data"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyPress={handleKeyPress}
         />
-        <Button variant="contained" onClick={handleAsk} disabled={!question || loading}>
-          Ask
-        </Button>
-      </Stack>
-    </Card>
+        <IconButton
+          color="primary"
+          onClick={handleAsk}
+          disabled={!input || loading}
+          sx={{ ml: 1 }}
+        >
+          <SendIcon />
+        </IconButton>
+      </Box>
+    </Box>
   );
 };
 
