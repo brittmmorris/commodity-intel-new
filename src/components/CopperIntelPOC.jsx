@@ -37,7 +37,7 @@ const CopperIntelPOC = () => {
   const [year, setYear] = useState('2024');
   const years = ['2024', '2023', '2022'];
   const [trendData, setTrendData] = useState([]);
-  const [trendLength, setTrendLength] = useState('5d');
+  const [trendLength, setTrendLength] = useState('30d');
 
   const handleSearch = async () => {
     setLoading(true);
