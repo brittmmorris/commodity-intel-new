@@ -23,7 +23,7 @@ const SummaryCard = ({ summary, price, trendLength, setTrendLength }) => {
         <>
           <Typography sx={{ mt: 2 }}><strong>Current Price:</strong> {price.current}</Typography>
           <Typography><strong>Yesterday:</strong> {price.previous}</Typography>
-          <Typography sx={{ color: price.isPositive ? 'green' : 'red' }}>
+          <Typography sx={{ color: !price.isPositive ? 'red' : 'green' }}>
             <strong>Change:</strong> {price.change}
           </Typography>
         </>
