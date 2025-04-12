@@ -60,7 +60,7 @@ const SummaryCard = ({ summary, price, trendLength, setTrendLength }) => {
                     key={i}
                     x1={prev.date}
                     x2={d.date}
-                    fill="green"
+                    fill={d.value > prev.value ? 'green' : 'red'}
                     fillOpacity={0.06}
                   />
                 ) : null;
