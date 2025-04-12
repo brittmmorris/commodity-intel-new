@@ -171,35 +171,63 @@ const CopperIntelPOC = () => {
       {loading && <CircularProgress sx={{ mt: 2 }} />}
 
       <Grid container spacing={2} mt={2}>
-        <Grid item xs={12} md={8}>
-          {summary && <SummaryCard summary={summary} price={price} trendLength={trendLength} setTrendLength={setTrendLength} />}
-        </Grid>
-      </Grid>
-
-      <Grid container spacing={2} mt={2}>
-  <Grid item xs={12} md={4}>
-    {facts && <FactPanelCard facts={facts} />}
-  </Grid>
-  <Grid item xs={12} md={4}>
-    {uses.length > 0 && <TopUsesCard data={uses} source={usesSource} />}
-  </Grid>
-  <Grid item xs={12} md={4}>
-    {news.length > 0 && <NewsCard articles={news} source={newsSource} />}
+  <Grid item xs={12}>
+    {summary && (
+      <SummaryCard
+        summary={summary}
+        price={price}
+        trendLength={trendLength}
+        setTrendLength={setTrendLength}
+      />
+    )}
   </Grid>
 </Grid>
 
 <Grid container spacing={2} mt={2}>
-  <Grid item xs={12} md={6}>
-    {mapSites.length > 0 && <MiningMap sites={mapSites} />}
+  {facts && (
+    <Grid item xs={12} md={4}>
+      <FactPanelCard facts={facts} />
+    </Grid>
+  )}
+  {uses.length > 0 && (
+    <Grid item xs={12} md={4}>
+      <TopUsesCard data={uses} source={usesSource} />
+    </Grid>
+  )}
+  {news.length > 0 && (
+    <Grid item xs={12} md={4}>
+      <NewsCard articles={news} source={newsSource} />
+    </Grid>
+  )}
+</Grid>
+
+<Grid container spacing={2} mt={2}>
+  {mapSites.length > 0 && (
+    <Grid item xs={12} md={6}>
+      <MiningMap sites={mapSites} />
+    </Grid>
+  )}
+  {trendData.length > 0 && (
+    <Grid item xs={12} md={6}>
+      <ProductionTrendCard data={trendData} />
+    </Grid>
+  )}
+</Grid>
+
+{locationSummary && (
+  <Grid container spacing={2} mt={2}>
+    <Grid item xs={12}>
+      <LocationSummaryCard location={selectedLocation} data={locationSummary} />
+    </Grid>
   </Grid>
-  <Grid item xs={12} md={6}>
-    {trendData.length > 0 && <ProductionTrendCard data={trendData} />}
+)}
+
+<Grid container spacing={2} mt={2}>
+  <Grid item xs={12}>
+    <AskAI context={summary} trendLength={trendLength} />
   </Grid>
 </Grid>
 
-      
-      {locationSummary && <LocationSummaryCard location={selectedLocation} data={locationSummary} />}
-      <AskAI context={summary} trendLength={trendLength} />
     </Container>
   );
 };
