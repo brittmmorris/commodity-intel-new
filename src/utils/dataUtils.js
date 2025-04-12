@@ -60,3 +60,8 @@ export const fetchLocationData = async (location, year = '2024') => {
     return data;
   };
   
+  export const fetchCommodityHistory = async (commodity) => {
+    const res = await fetch(`/api/commodity-history?symbol=${commodity}`);
+    return await res.json();
+  };
+  

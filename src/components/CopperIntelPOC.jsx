@@ -14,6 +14,9 @@ import NewsCard from './NewsCard';
 import LocationSummaryCard from './LocationSummaryCard';
 import FactPanelCard from './FactPanelCard';
 import { fetchCommodityFacts } from '../utils/dataUtils';
+import ProductionTrendCard from './ProductionTrendCard';
+import { fetchCommodityHistory } from '../utils/dataUtils';
+
 
 const commodities = ['Copper', 'Gold'];
 const locations = ['Chile', 'Ohio'];
@@ -34,6 +37,7 @@ const CopperIntelPOC = () => {
   const [facts, setFacts] = useState(null);
   const [year, setYear] = useState('2024');
   const years = ['2024', '2023', '2022']; // can expand later
+  const [trendData, setTrendData] = useState([]);
   
   const handleSearch = async () => {
     setLoading(true);
@@ -53,7 +57,12 @@ const CopperIntelPOC = () => {
   
       if (view === 0 && selectedCommodity) {
         const data = await fetchCommodityData(selectedCommodity, year);
-        setSummary(data.summary);
+        const summaryText = `In ${data.year}, global ${data.commodity.toLowerCase()} production was ${data.globalProductionTotal}. 
+          Top producers: ${data.topProducers
+            .map((p) => `${p.country} (${p.production})`)
+            .join(', ')}.`;
+
+          setSummary(summaryText);
       
         const latestPrice = await fetchCommodityPrice(selectedCommodity);
         setPrice(latestPrice);
@@ -69,6 +78,9 @@ const CopperIntelPOC = () => {
         
         const factsData = await fetchCommodityFacts(selectedCommodity);
         setFacts(factsData);
+
+        const trend = await fetchCommodityHistory(selectedCommodity);
+        setTrendData(trend);
 
       } else if (view === 1 && selectedLocation) {
         const data = await fetchLocationData(selectedLocation, year);
@@ -110,6 +122,7 @@ const CopperIntelPOC = () => {
           setMapSites([]);
           setLocationSummary(null);
           setFacts(null);
+          setTrendData([]);
         }}
         centered
       >
@@ -168,6 +181,7 @@ const CopperIntelPOC = () => {
       {mapSites.length > 0 && <MiningMap sites={mapSites} />}
       {locationSummary && <LocationSummaryCard location={selectedLocation} data={locationSummary} />}
       {facts && <FactPanelCard facts={facts} />}
+      {trendData.length > 0 && <ProductionTrendCard data={trendData} />}
       <AskAI context={summary} />
 
     </Container>
