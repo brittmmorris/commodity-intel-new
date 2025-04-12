@@ -32,7 +32,9 @@ const CopperIntelPOC = () => {
   const [newsSource, setNewsSource] = useState('');
   const [locationSummary, setLocationSummary] = useState(null);
   const [facts, setFacts] = useState(null);
-
+  const [year, setYear] = useState('2024');
+  const years = ['2024', '2023', '2022']; // can expand later
+  
   const handleSearch = async () => {
     setLoading(true);
     setSummary('');
@@ -50,7 +52,7 @@ const CopperIntelPOC = () => {
       setMapSites(filteredSites);
   
       if (view === 0 && selectedCommodity) {
-        const data = await fetchCommodityData(selectedCommodity);
+        const data = await fetchCommodityData(selectedCommodity, year);
         setSummary(data.summary);
       
         const latestPrice = await fetchCommodityPrice(selectedCommodity);
@@ -69,7 +71,7 @@ const CopperIntelPOC = () => {
         setFacts(factsData);
 
       } else if (view === 1 && selectedLocation) {
-        const data = await fetchLocationData(selectedLocation);
+        const data = await fetchLocationData(selectedLocation, year);
         setSummary(data.summary);
         
         const locData = await fetchLocationSummary(selectedLocation);
@@ -114,6 +116,22 @@ const CopperIntelPOC = () => {
         <Tab label="By Commodity" />
         <Tab label="By Location" />
       </Tabs>
+      <Box mt={2}>
+        <TextField
+          select
+          label="Select a Year"
+          value={year}
+          onChange={(e) => setYear(e.target.value)}
+          native
+          fullWidth
+        >
+          {years.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </TextField>
+      </Box>
 
       <Box mt={3}>
         {view === 0 ? (

@@ -1,21 +1,14 @@
 // utils/dataUtils.js
-export const fetchCommodityData = async (commodity) => {
-  const res = await fetch(`/api/commodity-summary?symbol=${commodity}`);
-  const data = await res.json();
-
-  return {
-    summary: `In ${data.year}, global ${data.commodity.toLowerCase()} production was ${data.globalProductionTotal}. Top producers: ${data.topProducers.map(p => `${p.country} (${p.production})`).join(', ')}.`,
-    source: data.source
-  };
+export const fetchCommodityData = async (commodity, year = '2024') => {
+  const res = await fetch(`/api/commodity-data?symbol=${commodity}&year=${year}`);
+  return await res.json();
 };
+
   
-  export const fetchLocationData = async (location) => {
-    const res = await fetch('/locationsData.json');
-    const data = await res.json();
-    return {
-      summary: `${location} has the following known commodities: ${data[location].join(', ')}`
-    };
-  };
+export const fetchLocationData = async (location, year = '2024') => {
+  const res = await fetch(`/api/location-data?location=${location}&year=${year}`);
+  return await res.json();
+};
   
   export const fetchMiningSites = async () => {
     const res = await fetch('/miningSites.json');
