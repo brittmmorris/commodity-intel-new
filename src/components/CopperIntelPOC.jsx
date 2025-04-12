@@ -195,31 +195,29 @@ const CopperIntelPOC = () => {
 
       <Grid container spacing={2} mt={2}>
         {facts && (
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={3}>
             <FactPanelCard facts={facts} />
           </Grid>
         )}
         {uses.length > 0 && (
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={3}>
             <TopUsesCard data={uses} source={usesSource} />
           </Grid>
         )}
         {news.length > 0 && (
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={3}>
             <NewsCard articles={news} source={newsSource} />
           </Grid>
         )}
         {trendData.length > 0 && (
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={3}>
             <ProductionTrendCard data={trendData} />
           </Grid>
         )}
-        {mapSites.length > 0 && (
-          <Grid item xs={12}>
-            <MiningMap sites={mapSites} />
-          </Grid>
-        )}
       </Grid>
+      {mapSites.length > 0 && (
+            <MiningMap sites={mapSites} />
+        )}
 
       {locationSummary && (
         <Grid container spacing={2} mt={2}>
