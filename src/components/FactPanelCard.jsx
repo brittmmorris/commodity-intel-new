@@ -8,14 +8,14 @@ const FactPanelCard = ({ facts }) => {
     <Card sx={{ mt: 3, p: 2 }}>
       <Typography variant="h6">Quick Facts</Typography>
       <List dense>
-        <ListItem><ListItemText primary={`Symbol: ${facts.symbol}`} /></ListItem>
-        <ListItem><ListItemText primary={`Unit: ${facts.unit}`} /></ListItem>
-        <ListItem><ListItemText primary={`Density: ${facts.density}`} /></ListItem>
-        <ListItem><ListItemText primary={`Melting Point: ${facts.meltingPoint}`} /></ListItem>
-        <ListItem><ListItemText primary={`Exporters: ${facts.exporters.join(', ')}`} /></ListItem>
+        <ListItem><ListItemText primary={`🔤 Symbol: ${facts.symbol}`} /></ListItem>
+        <ListItem><ListItemText primary={`⚖️ Unit: ${facts.unit}`} /></ListItem>
+        <ListItem><ListItemText primary={`🧪 Density: ${facts.density} g/cm³`} /></ListItem>
+        <ListItem><ListItemText primary={`🔥 Melting Point: ${facts.meltingPoint} °C`} /></ListItem>
+        <ListItem><ListItemText primary={`🌎 Exporters: ${facts.exporters.join(', ')}`} /></ListItem>
         <ListItem>
           <ListItemText
-            primary={`Critical Mineral: ${facts.critical ? 'Yes' : 'No'}`}
+            primary={`🛡 Critical Mineral: ${facts.critical === true ? 'Yes ✅' : 'No'}`}
           />
         </ListItem>
       </List>

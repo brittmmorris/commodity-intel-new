@@ -1,29 +1,33 @@
-// components/NewsCard.jsx
 import React from 'react';
-import { Card, Typography, List, ListItem, ListItemText, Link } from '@mui/material';
+import { Card, Typography, List, ListItem, ListItemText } from '@mui/material';
 
-const NewsCard = ({ articles = [], source }) => {
-  if (!articles.length) return null;
+const NewsCard = ({ articles, source }) => {
+  if (!articles || articles.length === 0) return null;
 
   return (
     <Card sx={{ mt: 3, p: 2 }}>
-      <Typography variant="h6">Recent News</Typography>
+      <Typography variant="h6">Recent News Mentions</Typography>
       <List dense>
-        {articles.map((item, index) => (
-          <ListItem key={index} disablePadding>
+        {articles.map((article, i) => (
+          <ListItem
+            key={i}
+            component="a"
+            href={article.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{ textDecoration: 'none', color: 'inherit' }}
+          >
             <ListItemText
-              primary={
-                <Link href={item.url} target="_blank" rel="noopener noreferrer">
-                  {item.title}
-                </Link>
-              }
-              secondary={item.date}
+              primary={article.title}
+              secondary={article.date ? `Published: ${article.date}` : null}
+              primaryTypographyProps={{ variant: 'body2' }}
+              secondaryTypographyProps={{ variant: 'caption', color: 'text.secondary' }}
             />
           </ListItem>
         ))}
       </List>
       {source && (
-        <Typography variant="caption" sx={{ mt: 1, display: 'block', fontStyle: 'italic' }}>
+        <Typography variant="caption" sx={{ fontStyle: 'italic' }}>
           Source: {source}
         </Typography>
       )}

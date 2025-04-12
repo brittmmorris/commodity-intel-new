@@ -70,8 +70,11 @@ const SummaryCard = ({ summary, price }) => {
               <YAxis domain={['auto', 'auto']} />
               <Tooltip
                 formatter={(value, name, props) => {
+                  if (typeof value !== 'number') return [`$${value}`, 'Price'];
+
                   const base = props.payload?.base;
                   const pct = base ? ((value - base) / base * 100).toFixed(2) : null;
+
                   return pct
                     ? [`$${value.toFixed(2)} (+${pct}%)`, 'Price']
                     : [`$${value.toFixed(2)}`, 'Price'];
