@@ -25,8 +25,10 @@ const ProductionTrendCard = ({ data }) => {
         <LineChart data={chartData}>
           <XAxis dataKey="year" />
           <XAxis xAxisId="index" dataKey="index" hide />
-          <YAxis domain={['auto', 'auto']} />
-
+          <YAxis
+            domain={['auto', 'auto']}
+            tickFormatter={(value) => value.toLocaleString()}
+          />
           {/* Shading areas between years */}
           {chartData.map((point, i, arr) => {
             if (i === 0) return null;
