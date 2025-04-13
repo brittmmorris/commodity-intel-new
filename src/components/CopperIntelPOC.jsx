@@ -225,7 +225,7 @@ const CopperIntelPOC = () => {
         </Button>
       </Box>
 
-      {loading && <CircularProgress sx={{ mt: 2 }} />}
+      {/* {loading && <CircularProgress sx={{ mt: 2 }} />} */}
 
       {summary && (
         <SummaryCard
@@ -243,9 +243,14 @@ const CopperIntelPOC = () => {
         {trendData.length > 0 && <Box flex={1} minWidth={300}><ProductionTrendCard data={trendData} /></Box>}
       </Stack>
 
-      {mapSites.length > 0 && (
-        <MiningMap sites={mapSites} onLocationSelect={handleLocationSelect} />
+      {view === 1 && (
+        <MiningMap
+          sites={mapSites}
+          onLocationSelect={handleLocationSelect}
+          centerCountry={selectedLocation}
+        />
       )}
+
 
       {locationSummary && (
         <LocationSummaryCard location={selectedLocation} data={locationSummary} onCommodityClick={handleCommoditySelect} />
