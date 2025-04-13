@@ -25,9 +25,8 @@ const MiningMap = ({ sites, onLocationSelect }) => {
           // Try to find a site near the clicked coordinates (within ~0.2 degrees)
           const clickedSite = sites.find(
             (site) =>
-            Math.abs(site.lat - lat) < 0.2 &&
-            Math.abs(site.lng - lng) < 0.2
-            );
+              Math.abs(site.lat - lat) < 0.5 && Math.abs(site.lng - lng) < 0.5
+          );          
             console.log('clickedSite:', clickedSite);
             
             if (clickedSite && onLocationSelect) {
