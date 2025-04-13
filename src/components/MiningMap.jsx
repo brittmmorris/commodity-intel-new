@@ -17,35 +17,33 @@ const MiningMap = ({ sites, onLocationSelect }) => {
         mapContainerStyle={containerStyle}
         center={center}
         zoom={2}
-        onDblClick={(e) => {
+        onDblClick={async (e) => {
           const lat = e.latLng.lat();
           const lng = e.latLng.lng();
           console.log('Double clicked at:', lat, lng);
         
-          let closestSite = null;
-          let closestDistance = Infinity;
+          const geocoder = new window.google.maps.Geocoder();
+          geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+            if (status === 'OK' && results[0]) {
+              const countryComponent = results[0].address_components.find(c =>
+                c.types.includes('country')
+              );
         
-          sites.forEach(site => {
-            const dist = Math.sqrt(
-              Math.pow(site.lat - lat, 2) + Math.pow(site.lng - lng, 2)
-            );
-        
-            if (dist < closestDistance) {
-              closestDistance = dist;
-              closestSite = site;
+              if (countryComponent) {
+                const countryName = countryComponent.long_name;
+                console.log('Country detected:', countryName);
+                if (onLocationSelect) {
+                  onLocationSelect(countryName);
+                }
+              } else {
+                console.log('Country not found in results.');
+              }
+            } else {
+              console.error('Geocoder failed due to:', status);
             }
           });
-        
-          // Optional: Only trigger if within ~5 degrees (~500km)
-          if (closestDistance < 5) {
-            console.log('Closest site:', closestSite);
-            if (closestSite && onLocationSelect) {
-              onLocationSelect(closestSite.country); // or site.name depending on your app
-            }
-          } else {
-            console.log('No close site found');
-          }
         }}
+        
         
       >
         {sites.map((site, i) => (
