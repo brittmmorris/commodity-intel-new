@@ -21,17 +21,21 @@ const MiningMap = ({ sites, onLocationSelect }) => {
           const lat = e.latLng.lat();
           const lng = e.latLng.lng();
           console.log('Double clicked at:', lat, lng);
-
+          
           // Try to find a site near the clicked coordinates (within ~0.2 degrees)
           const clickedSite = sites.find(
             (site) =>
-              Math.abs(site.lat - lat) < 0.2 &&
-              Math.abs(site.lng - lng) < 0.2
-          );
-
-          if (clickedSite && onLocationSelect) {
-            onLocationSelect(clickedSite.country); // or site.name depending on your setup
-          }
+            Math.abs(site.lat - lat) < 0.2 &&
+            Math.abs(site.lng - lng) < 0.2
+            );
+            console.log('clickedSite:', clickedSite);
+            
+            if (clickedSite && onLocationSelect) {
+              console.log('clickedSite && onLocationSelect: True');
+              console.log('clickedSite.country:', clickedSite.country);
+              onLocationSelect(clickedSite.country); // or site.name depending on your setup
+            }
+            console.log('out of if');
         }}
       >
         {sites.map((site, i) => (

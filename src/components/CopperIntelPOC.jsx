@@ -129,6 +129,7 @@ const CopperIntelPOC = () => {
 
   // When a location is selected from the map, switch to location view
   const handleLocationSelect = (locationName) => {
+    debugger
     setView(1);
     debugger
     setSelectedLocation(locationName);
