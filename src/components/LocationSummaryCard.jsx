@@ -1,26 +1,35 @@
 import React from 'react';
-import { Card, Typography, List, ListItem, ListItemText } from '@mui/material';
+import { Card, Typography, Chip, Stack } from '@mui/material';
 
-const LocationSummaryCard = ({ location, data }) => {
+const LocationSummaryCard = ({ location, data, onCommodityClick }) => {
   if (!data) return null;
 
   return (
     <Card sx={{ mt: 3, p: 2 }}>
-      <Typography variant="h6">What’s in {location}?</Typography>
-      
-      <Typography>Known Commodities: {data.commodities.join(', ')}</Typography>
-      <Typography>Mines: {data.mineCount}</Typography>
+      <Typography variant="h6" gutterBottom>
+        {location} Overview
+      </Typography>
 
-      <Typography sx={{ mt: 2 }}><strong>Top Commodities:</strong></Typography>
-      <List dense>
-        {data.topCommodities.map((c, i) => (
-          <ListItem key={i} disablePadding>
-            <ListItemText primary={`${c.name} – ${c.share}`} />
-          </ListItem>
+      <Typography variant="body1" sx={{ mb: 2 }}>
+        {data.summary}
+      </Typography>
+
+      <Typography variant="subtitle2" gutterBottom>
+        Commodities:
+      </Typography>
+      <Stack direction="row" spacing={1} flexWrap="wrap">
+        {data.commodities.map((commodity, i) => (
+          <Chip
+            key={i}
+            label={commodity}
+            clickable
+            color="primary"
+            onClick={() => onCommodityClick?.(commodity)}
+          />
         ))}
-      </List>
+      </Stack>
 
-      <Typography variant="caption" sx={{ fontStyle: 'italic' }}>
+      <Typography variant="caption" sx={{ display: 'block', mt: 2, fontStyle: 'italic' }}>
         Source: {data.source}
       </Typography>
     </Card>

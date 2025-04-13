@@ -1,13 +1,4 @@
-import React from 'react';
-import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
-
-const containerStyle = {
-  width: '100%',
-  height: '400px',
-  marginTop: '20px'
-};
-
-const MiningMap = ({ sites }) => {
+const MiningMap = ({ sites, onLocationSelect }) => {
   const [selectedSite, setSelectedSite] = React.useState(null);
   const center = sites.length ? { lat: sites[0].lat, lng: sites[0].lng } : { lat: 20, lng: 0 };
 
@@ -21,7 +12,17 @@ const MiningMap = ({ sites }) => {
           const lat = e.latLng.lat();
           const lng = e.latLng.lng();
           console.log('Double clicked at:', lat, lng);
-          // TODO: trigger switch to location tab and load data
+
+          // Try to find a site near the clicked coordinates (within ~0.2 degrees)
+          const clickedSite = sites.find(
+            (site) =>
+              Math.abs(site.lat - lat) < 0.2 &&
+              Math.abs(site.lng - lng) < 0.2
+          );
+
+          if (clickedSite && onLocationSelect) {
+            onLocationSelect(clickedSite.country); // or site.name depending on your setup
+          }
         }}
       >
         {sites.map((site, i) => (
@@ -29,6 +30,7 @@ const MiningMap = ({ sites }) => {
             key={i}
             position={{ lat: site.lat, lng: site.lng }}
             onClick={() => setSelectedSite(site)}
+            onDblClick={() => onLocationSelect(site.country)} // optional
           />
         ))}
 
@@ -47,5 +49,3 @@ const MiningMap = ({ sites }) => {
     </LoadScript>
   );
 };
-
-export default MiningMap;

@@ -110,6 +110,12 @@ const CopperIntelPOC = () => {
     setLoading(false);
   };
 
+  const handleCommoditySelect = (commodityName) => {
+    setView(0); // switch to commodity tab
+    setSelectedCommodity(commodityName);
+    handleSearch(); // fetch the new data
+  };  
+
   // When a location is selected from the map, switch to location view
   const handleLocationSelect = (locationName) => {
     setView(1);
@@ -209,7 +215,7 @@ const CopperIntelPOC = () => {
       )}
 
       {locationSummary && (
-            <LocationSummaryCard location={selectedLocation} data={locationSummary} />
+            <LocationSummaryCard location={selectedLocation} data={locationSummary} onCommodityClick={handleCommoditySelect} />
       )}
 
       <AskAI context={summary} trendLength={trendLength} />
