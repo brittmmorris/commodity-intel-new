@@ -1,5 +1,5 @@
 // components/CopperIntelPOC.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Tabs,
@@ -62,14 +62,14 @@ const CopperIntelPOC = () => {
       const allSites = await fetchMiningSites();
       const filteredSites = allSites.filter(site => {
         return view === 0
-          ? site.commodity.toLowerCase() === selectedCommodity.toLowerCase()
-          : site.country.toLowerCase() === selectedLocation.toLowerCase();
+          ? site.commodity.toLowerCase() === selectedCommodity?.toLowerCase()
+          : site.country.toLowerCase() === selectedLocation?.toLowerCase();
       });
       setMapSites(filteredSites);
 
       if (view === 0 && selectedCommodity) {
         const data = await fetchCommodityData(selectedCommodity, year);
-        const summaryText = `In ${data.year}, global ${data.commodity.toLowerCase()} production was ${data.globalProductionTotal}. Top producers: ${data.topProducers.map((p) => `${p.country} (${p.production})`).join(', ')}.`;
+        const summaryText = `In ${data.year}, global ${data.commodity.toLowerCase()} production was ${data.globalProductionTotal}. Top producers: ${data.topProducers.map((p) => `${p.country} (${p.production})`).join(', ')}`;
         setSummary(summaryText);
 
         const latestPrice = await fetchCommodityPrice(selectedCommodity, trendLength);
@@ -110,8 +110,21 @@ const CopperIntelPOC = () => {
     setLoading(false);
   };
 
+  useEffect(() => {
+    if (view === 1 && selectedLocation) {
+      handleSearch();
+    }
+  }, [selectedLocation, view]);
+
+  useEffect(() => {
+    if (view === 0 && selectedCommodity) {
+      handleSearch();
+    }
+  }, [selectedCommodity, view]);
+  
+
   const handleCommoditySelect = (commodityName) => {
-    setView(0); // switch to commodity tab
+    setView(0);
     setSelectedCommodity(commodityName);
     setSelectedLocation(null);
     setSummary('');
@@ -124,14 +137,11 @@ const CopperIntelPOC = () => {
     setLocationSummary(null);
     setFacts(null);
     setTrendData([]);
-    handleSearch(); // fetch the new data
-  };  
+  };
+  
 
-  // When a location is selected from the map, switch to location view
   const handleLocationSelect = (locationName) => {
-    debugger
     setView(1);
-    debugger
     setSelectedLocation(locationName);
     setSelectedCommodity(null);
     setSummary('');
@@ -144,9 +154,6 @@ const CopperIntelPOC = () => {
     setLocationSummary(null);
     setFacts(null);
     setTrendData([]);
-
-    // Optionally trigger a search immediately or let the user confirm
-    handleSearch();
   };
 
   return (
@@ -221,26 +228,27 @@ const CopperIntelPOC = () => {
       {loading && <CircularProgress sx={{ mt: 2 }} />}
 
       {summary && (
-            <SummaryCard
-              summary={summary}
-              price={price}
-              trendLength={trendLength}
-              setTrendLength={setTrendLength}
-            />
+        <SummaryCard
+          summary={summary}
+          price={price}
+          trendLength={trendLength}
+          setTrendLength={setTrendLength}
+        />
       )}
 
-<Stack direction="row" spacing={2} flexWrap="wrap" useFlexGap mt={2}>
-  {facts && <Box flex={1} minWidth={300}><FactPanelCard facts={facts} /></Box>}
-  {uses.length > 0 && <Box flex={1} minWidth={300}><TopUsesCard data={uses} source={usesSource} /></Box>}
-  {news.length > 0 && <Box flex={1} minWidth={300}><NewsCard articles={news} source={newsSource} /></Box>}
-  {trendData.length > 0 && <Box flex={1} minWidth={300}><ProductionTrendCard data={trendData} /></Box>}
-</Stack>
+      <Stack direction="row" spacing={2} flexWrap="wrap" useFlexGap mt={2}>
+        {facts && <Box flex={1} minWidth={300}><FactPanelCard facts={facts} /></Box>}
+        {uses.length > 0 && <Box flex={1} minWidth={300}><TopUsesCard data={uses} source={usesSource} /></Box>}
+        {news.length > 0 && <Box flex={1} minWidth={300}><NewsCard articles={news} source={newsSource} /></Box>}
+        {trendData.length > 0 && <Box flex={1} minWidth={300}><ProductionTrendCard data={trendData} /></Box>}
+      </Stack>
+
       {mapSites.length > 0 && (
-          <MiningMap sites={mapSites} onLocationSelect={handleLocationSelect} />
+        <MiningMap sites={mapSites} onLocationSelect={handleLocationSelect} />
       )}
 
       {locationSummary && (
-            <LocationSummaryCard location={selectedLocation} data={locationSummary} onCommodityClick={handleCommoditySelect} />
+        <LocationSummaryCard location={selectedLocation} data={locationSummary} onCommodityClick={handleCommoditySelect} />
       )}
 
       <AskAI context={summary} trendLength={trendLength} />
