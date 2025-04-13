@@ -20,6 +20,7 @@ const MiningMap = ({ sites, onLocationSelect }) => {
         onDblClick={(e) => {
           const lat = e.latLng.lat();
           const lng = e.latLng.lng();
+          debugger
           console.log('Double clicked at:', lat, lng);
           
           // Try to find a site near the clicked coordinates (within ~0.2 degrees)
@@ -28,7 +29,7 @@ const MiningMap = ({ sites, onLocationSelect }) => {
               Math.abs(site.lat - lat) < 0.5 && Math.abs(site.lng - lng) < 0.5
           );          
             console.log('clickedSite:', clickedSite);
-            
+            debugger
             if (clickedSite && onLocationSelect) {
               console.log('clickedSite && onLocationSelect: True');
               console.log('clickedSite.country:', clickedSite.country);
