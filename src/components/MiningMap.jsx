@@ -18,6 +18,7 @@ const MiningMap = ({ sites, onLocationSelect }) => {
         center={center}
         zoom={2}
         onDblClick={(e) => {
+          console.log('Double clicked at:', e);
           const lat = e.latLng.lat();
           const lng = e.latLng.lng();
           debugger
