@@ -18,26 +18,35 @@ const MiningMap = ({ sites, onLocationSelect }) => {
         center={center}
         zoom={2}
         onDblClick={(e) => {
-          console.log('Double clicked at:', e);
           const lat = e.latLng.lat();
           const lng = e.latLng.lng();
-          debugger
           console.log('Double clicked at:', lat, lng);
-          
-          // Try to find a site near the clicked coordinates (within ~0.2 degrees)
-          const clickedSite = sites.find(
-            (site) =>
-              Math.abs(site.lat - lat) < 0.5 && Math.abs(site.lng - lng) < 0.5
-          );          
-            console.log('clickedSite:', clickedSite);
-            debugger
-            if (clickedSite && onLocationSelect) {
-              console.log('clickedSite && onLocationSelect: True');
-              console.log('clickedSite.country:', clickedSite.country);
-              onLocationSelect(clickedSite.country); // or site.name depending on your setup
+        
+          let closestSite = null;
+          let closestDistance = Infinity;
+        
+          sites.forEach(site => {
+            const dist = Math.sqrt(
+              Math.pow(site.lat - lat, 2) + Math.pow(site.lng - lng, 2)
+            );
+        
+            if (dist < closestDistance) {
+              closestDistance = dist;
+              closestSite = site;
             }
-            console.log('out of if');
+          });
+        
+          // Optional: Only trigger if within ~5 degrees (~500km)
+          if (closestDistance < 5) {
+            console.log('Closest site:', closestSite);
+            if (closestSite && onLocationSelect) {
+              onLocationSelect(closestSite.country); // or site.name depending on your app
+            }
+          } else {
+            console.log('No close site found');
+          }
         }}
+        
       >
         {sites.map((site, i) => (
           <Marker
