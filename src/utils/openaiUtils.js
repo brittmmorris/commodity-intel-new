@@ -1,6 +1,6 @@
 // utils/openaiUtils.js
 export const askOpenAI = async (prompt) => {
-  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_KEY}`,

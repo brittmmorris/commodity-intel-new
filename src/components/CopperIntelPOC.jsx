@@ -110,6 +110,14 @@ const CopperIntelPOC = () => {
     setLoading(false);
   };
 
+  // When a location is selected from the map, switch to location view
+  const handleLocationSelect = (locationName) => {
+    setView(1);
+    setSelectedLocation(locationName);
+    // Optionally trigger a search immediately or let the user confirm
+    handleSearch();
+  };
+
   return (
     <Container maxWidth="lg" sx={{ pt: 4 }}>
       <Tabs
@@ -197,8 +205,8 @@ const CopperIntelPOC = () => {
   {trendData.length > 0 && <Box flex={1} minWidth={300}><ProductionTrendCard data={trendData} /></Box>}
 </Stack>
       {mapSites.length > 0 && (
-            <MiningMap sites={mapSites} />
-        )}
+          <MiningMap sites={mapSites} onLocationSelect={handleLocationSelect} />
+      )}
 
       {locationSummary && (
             <LocationSummaryCard location={selectedLocation} data={locationSummary} />
