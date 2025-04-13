@@ -113,6 +113,17 @@ const CopperIntelPOC = () => {
   const handleCommoditySelect = (commodityName) => {
     setView(0); // switch to commodity tab
     setSelectedCommodity(commodityName);
+    setSelectedLocation(null);
+    setSummary('');
+    setPrice('');
+    setUses([]);
+    setUsesSource('');
+    setNews([]);
+    setNewsSource('');
+    setMapSites([]);
+    setLocationSummary(null);
+    setFacts(null);
+    setTrendData([]);
     handleSearch(); // fetch the new data
   };  
 
@@ -121,6 +132,18 @@ const CopperIntelPOC = () => {
     setView(1);
     debugger
     setSelectedLocation(locationName);
+    setSelectedCommodity(null);
+    setSummary('');
+    setPrice('');
+    setUses([]);
+    setUsesSource('');
+    setNews([]);
+    setNewsSource('');
+    setMapSites([]);
+    setLocationSummary(null);
+    setFacts(null);
+    setTrendData([]);
+
     // Optionally trigger a search immediately or let the user confirm
     handleSearch();
   };
