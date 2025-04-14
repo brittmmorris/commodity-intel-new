@@ -75,6 +75,33 @@ const LocationSummaryCard = ({ location, data, onCommodityClick }) => {
         </Typography>
       )}
 
+{Array.isArray(data.topCommodities) && data.topCommodities.length > 0 && (
+  <Box mt={4}>
+    <Typography variant="subtitle2" gutterBottom>
+      Top Commodities by Share:
+    </Typography>
+    <Stack spacing={1}>
+      {data.topCommodities.map((item, i) => (
+        <Box key={i}>
+          <Typography variant="body2">
+            <strong>{item.name}:</strong> {item.share}
+          </Typography>
+          <Box
+            sx={{
+              height: 8,
+              width: `${parseInt(item.share)}%`,
+              bgcolor: 'primary.main',
+              borderRadius: 4,
+              mt: 0.5
+            }}
+          />
+        </Box>
+      ))}
+    </Stack>
+  </Box>
+)}
+
+
       {data.source && (
         <Typography variant="caption" sx={{ display: 'block', mt: 2, fontStyle: 'italic' }}>
           Source: {data.source}
