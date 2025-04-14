@@ -3,8 +3,18 @@ export default async function handler(req, res) {
 
   const yahooSymbols = {
     Copper: 'HG=F',
-    Gold: 'GC=F'
+    Gold: 'GC=F',
+    Silver: 'SI=F',
+    Platinum: 'PL=F',
+    IronOre: 'TIO1!',
+    Coal: 'QL=F',
+    Bauxite: '', // No direct symbol, typically part of alumina/aluminum
+    Nickel: 'NI=F',
+    Zinc: 'ZS=F', // May vary; zinc futures aren’t always listed
+    Lithium: '', // No reliable real-time futures symbol yet
+    RareEarthElements: '' // Not traded directly; part of rare earth ETF usually
   };
+  
 
   const yahooSymbol = yahooSymbols[symbol];
   if (!yahooSymbol) {

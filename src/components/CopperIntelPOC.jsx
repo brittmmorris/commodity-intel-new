@@ -31,8 +31,35 @@ import { fetchCommodityHistory } from '../utils/dataUtils';
 import { fetchLocationHistory } from '../utils/dataUtils';
 import { fetchLocationNews } from '../utils/dataUtils';
 
-const commodities = ['Copper', 'Gold'];
-const locations = ['Chile', 'Ohio'];
+const commodities = [
+  'Copper',
+  'Gold',
+  'Lithium',
+  'Iron Ore',
+  'Coal',
+  'Bauxite',
+  'Nickel',
+  'Zinc',
+  'Platinum',
+  'Rare Earth Elements'
+];
+
+const locations = [
+  'Chile',
+  'Ohio',
+  'Australia',
+  'China',
+  'Peru',
+  'USA',
+  'South Africa',
+  'Brazil',
+  'Canada',
+  'DR Congo'
+];
+
+
+
+
 
 const CopperIntelPOC = () => {
   const [view, setView] = useState(0);
