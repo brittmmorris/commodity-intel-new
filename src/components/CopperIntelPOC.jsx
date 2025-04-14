@@ -92,10 +92,9 @@ const CopperIntelPOC = () => {
         const trend = await fetchCommodityHistory(selectedCommodity);
         setTrendData(trend);
       } else if (view === 1 && selectedLocation) {
-        const data = await fetchLocationData(selectedLocation, year);
-        setSummary(data.summary);
-
+        
         const locData = await fetchLocationSummary(selectedLocation);
+        setSummary(locData.summary);
         setLocationSummary(locData);
 
         const trend = await fetchLocationHistory(selectedLocation);
