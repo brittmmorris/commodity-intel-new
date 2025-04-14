@@ -244,13 +244,11 @@ const CopperIntelPOC = () => {
         {trendData.length > 0 && <Box flex={1} minWidth={300}><ProductionTrendCard data={trendData} /></Box>}
       </Stack>
 
-      {mapSites.length > 0 && (
         <MiningMap
           sites={mapSites}
           onLocationSelect={handleLocationSelect}
           centerCountry={view === 1 ? selectedLocation : null}
         />
-      )}
 
       {locationSummary && (
         <LocationSummaryCard location={selectedLocation} data={locationSummary} onCommodityClick={handleCommoditySelect} />
