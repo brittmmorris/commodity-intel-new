@@ -70,7 +70,16 @@ const AskAI = ({ context, trendLength }) => {
 
   return (
     <Box mt={4}>
-      <Card sx={{ p: 2, minHeight: 200, maxHeight: 300, overflowY: 'auto' }}>
+      <Card
+        sx={{
+          p: 2,
+          minHeight: 200,
+          maxHeight: 300,
+          overflowY: 'auto',
+          border: '1px solid #cccccc',
+          borderRadius: 2 // or '4px'
+        }}
+      >
         {messages.map((msg, index) => (
           <Stack
             key={index}
