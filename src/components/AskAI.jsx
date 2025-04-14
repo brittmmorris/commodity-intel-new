@@ -69,7 +69,7 @@ const AskAI = ({ context, trendLength }) => {
   };
 
   return (
-    <Box mt={4}>
+    <Box mt={4} mb={6}>
       <Card
         sx={{
           p: 2,
@@ -118,7 +118,7 @@ const AskAI = ({ context, trendLength }) => {
         )}
       </Card>
 
-      <Box display="flex" alignItems="center" mt={2}>
+      <Box display="flex" alignItems="center">
         <TextField
           fullWidth
           label="Ask a question about the data"
