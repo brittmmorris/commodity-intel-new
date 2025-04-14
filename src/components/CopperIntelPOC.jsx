@@ -29,7 +29,7 @@ import { fetchCommodityFacts } from '../utils/dataUtils';
 import ProductionTrendCard from './ProductionTrendCard';
 import { fetchCommodityHistory } from '../utils/dataUtils';
 import { fetchLocationHistory } from '../utils/dataUtils';
-
+import { fetchLocationNews } from '../utils/dataUtils';
 
 const commodities = ['Copper', 'Gold'];
 const locations = ['Chile', 'Ohio'];
@@ -100,6 +100,10 @@ const CopperIntelPOC = () => {
 
         const trend = await fetchLocationHistory(selectedLocation);
         setTrendData(trend);
+
+        const newsData = await fetchLocationNews(selectedLocation);
+        setNews(newsData.articles || []);
+        setNewsSource(newsData.source || '');
 
         setPrice('');
         setUses([]);
