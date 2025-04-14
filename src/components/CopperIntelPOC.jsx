@@ -237,13 +237,17 @@ const CopperIntelPOC = () => {
 
       {/* {loading && <CircularProgress sx={{ mt: 2 }} />} */}
 
-      {summary && (
+      {summary && view === 0 && (
         <SummaryCard
           summary={summary}
           price={price}
           trendLength={trendLength}
           setTrendLength={setTrendLength}
         />
+      )}
+
+    {locationSummary && (
+        <LocationSummaryCard location={selectedLocation} data={locationSummary} onCommodityClick={handleCommoditySelect} />
       )}
 
       <Stack direction="row" spacing={2} flexWrap="wrap" useFlexGap mt={2}>
@@ -258,10 +262,6 @@ const CopperIntelPOC = () => {
           onLocationSelect={handleLocationSelect}
           centerCountry={view === 1 ? selectedLocation : null}
         />
-
-      {locationSummary && (
-        <LocationSummaryCard location={selectedLocation} data={locationSummary} onCommodityClick={handleCommoditySelect} />
-      )}
 
       <AskAI context={summary} trendLength={trendLength} />
     </Container>
