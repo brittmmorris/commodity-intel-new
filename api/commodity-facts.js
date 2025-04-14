@@ -5,7 +5,7 @@ const facts = {
       "density": "8.96 g/cm³",
       "meltingPoint": "1,085°C",
       "exporters": ["Chile", "Peru", "DR Congo"],
-      "critical": False,
+      "critical": false,
       "source": "USGS & World Bank"
   },
   "Gold": {
@@ -14,7 +14,7 @@ const facts = {
       "density": "19.32 g/cm³",
       "meltingPoint": "1,064°C",
       "exporters": ["China", "Russia", "Australia"],
-      "critical": False,
+      "critical": false,
       "source": "USGS & World Gold Council"
   },
   "Lithium": {
@@ -23,7 +23,7 @@ const facts = {
       "density": "0.53 g/cm³",
       "meltingPoint": "180.5°C",
       "exporters": ["Australia", "Chile", "China"],
-      "critical": True,
+      "critical": true,
       "source": "USGS & IEA"
   },
   "Iron Ore": {
@@ -32,7 +32,7 @@ const facts = {
       "density": "7.87 g/cm³",
       "meltingPoint": "1,538°C",
       "exporters": ["Australia", "Brazil", "South Africa"],
-      "critical": False,
+      "critical": false,
       "source": "USGS & World Steel Association"
   },
   "Coal": {
@@ -41,7 +41,7 @@ const facts = {
       "density": "Varies",
       "meltingPoint": "Does not melt (decomposes)",
       "exporters": ["Indonesia", "Australia", "Russia"],
-      "critical": True,
+      "critical": true,
       "source": "IEA & US EIA"
   },
   "Bauxite": {
@@ -50,7 +50,7 @@ const facts = {
       "density": "2.4–2.6 g/cm³",
       "meltingPoint": "Releases alumina at 2,072°C",
       "exporters": ["Australia", "Guinea", "Indonesia"],
-      "critical": True,
+      "critical": true,
       "source": "USGS & Aluminium Association"
   },
   "Nickel": {
@@ -59,7 +59,7 @@ const facts = {
       "density": "8.90 g/cm³",
       "meltingPoint": "1,455°C",
       "exporters": ["Indonesia", "Philippines", "Russia"],
-      "critical": True,
+      "critical": true,
       "source": "USGS & Nickel Institute"
   },
   "Zinc": {
@@ -68,7 +68,7 @@ const facts = {
       "density": "7.14 g/cm³",
       "meltingPoint": "419.5°C",
       "exporters": ["China", "Peru", "Australia"],
-      "critical": False,
+      "critical": false,
       "source": "USGS & ILZSG"
   },
   "Platinum": {
@@ -77,7 +77,7 @@ const facts = {
       "density": "21.45 g/cm³",
       "meltingPoint": "1,768°C",
       "exporters": ["South Africa", "Russia", "Zimbabwe"],
-      "critical": True,
+      "critical": true,
       "source": "USGS & World Platinum Investment Council"
   },
   "Rare Earth Elements": {
@@ -86,7 +86,7 @@ const facts = {
       "density": "Varies by element",
       "meltingPoint": "Varies by element",
       "exporters": ["China", "USA", "Myanmar"],
-      "critical": True,
+      "critical": true,
       "source": "USGS & IEA"
   }
 }
