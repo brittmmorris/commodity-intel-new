@@ -28,6 +28,8 @@ import FactPanelCard from './FactPanelCard';
 import { fetchCommodityFacts } from '../utils/dataUtils';
 import ProductionTrendCard from './ProductionTrendCard';
 import { fetchCommodityHistory } from '../utils/dataUtils';
+import { fetchLocationHistory } from '../utils/dataUtils';
+
 
 const commodities = ['Copper', 'Gold'];
 const locations = ['Chile', 'Ohio'];
@@ -95,6 +97,10 @@ const CopperIntelPOC = () => {
 
         const locData = await fetchLocationSummary(selectedLocation);
         setLocationSummary(locData);
+
+        const trend = await fetchLocationHistory(selectedLocation);
+        setTrendData(trend);
+
         setPrice('');
         setUses([]);
         setUsesSource('');

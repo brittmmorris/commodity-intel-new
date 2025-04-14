@@ -65,3 +65,9 @@ export const fetchLocationData = async (location, year = '2024') => {
     return await res.json();
   };
   
+  export async function fetchLocationHistory(location) {
+    const res = await fetch(`/api/location-history?location=${location}`);
+    if (!res.ok) throw new Error('Failed to fetch location trend data');
+    return res.json();
+  }
+  
