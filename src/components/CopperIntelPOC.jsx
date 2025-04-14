@@ -66,6 +66,7 @@ const CopperIntelPOC = () => {
           : site.country.toLowerCase() === selectedLocation?.toLowerCase();
       });
       setMapSites(filteredSites);
+      console.log('Filtered sites:', filteredSites);
 
       if (view === 0 && selectedCommodity) {
         const data = await fetchCommodityData(selectedCommodity, year);
