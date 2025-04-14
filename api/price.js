@@ -6,14 +6,15 @@ export default async function handler(req, res) {
     Gold: 'GC=F',
     Silver: 'SI=F',
     Platinum: 'PL=F',
-    IronOre: 'TIO1!',
-    Coal: 'QL=F',
-    Bauxite: '', // No direct symbol, typically part of alumina/aluminum
     Nickel: 'NI=F',
-    Zinc: 'ZS=F', // May vary; zinc futures aren’t always listed
-    Lithium: '', // No reliable real-time futures symbol yet
-    RareEarthElements: '' // Not traded directly; part of rare earth ETF usually
+    IronOre: '', // No direct symbol; consider using 'PICK' ETF as a proxy
+    Coal: '', // No direct symbol; consider using 'KOL' ETF as a proxy
+    Zinc: '', // No direct symbol; consider using 'PICK' ETF as a proxy
+    Bauxite: '', // No direct symbol; consider using 'AA' or 'PICK' as proxies
+    Lithium: '', // No direct symbol; consider using 'LIT' ETF as a proxy
+    RareEarthElements: '' // Not traded directly; consider using 'REMX' ETF as a proxy
   };
+  
   
 
   const yahooSymbol = yahooSymbols[symbol];
