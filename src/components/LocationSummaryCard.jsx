@@ -1,5 +1,15 @@
 import React from 'react';
-import { Card, Typography, Chip, Stack } from '@mui/material';
+import { Card, Typography, Chip, Stack, Box } from '@mui/material';
+
+// Map emoji to commodities
+const commodityEmojis = {
+  Copper: '🪙',
+  Gold: '🥇',
+  Lithium: '🔋',
+  Coal: '🪨',
+  Salt: '🧂',
+  Limestone: '🏗️',
+};
 
 const LocationSummaryCard = ({ location, data, onCommodityClick }) => {
   if (!data) {
@@ -34,7 +44,7 @@ const LocationSummaryCard = ({ location, data, onCommodityClick }) => {
             {data.commodities.map((commodity, i) => (
               <Chip
                 key={i}
-                label={commodity}
+                label={`${commodityEmojis[commodity] || ''} ${commodity}`.trim()}
                 clickable
                 color="primary"
                 onClick={() => onCommodityClick?.(commodity)}
@@ -45,6 +55,23 @@ const LocationSummaryCard = ({ location, data, onCommodityClick }) => {
       ) : (
         <Typography variant="body2" color="textSecondary">
           No commodity data available.
+        </Typography>
+      )}
+
+      {data.didYouKnow && (
+        <Box mt={3} p={2} bgcolor="#f9f9f9" borderRadius={2}>
+          <Typography variant="subtitle2">Did You Know?</Typography>
+          <Typography variant="body2">{data.didYouKnow}</Typography>
+        </Box>
+      )}
+
+      {data.economicImportance && (
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          sx={{ mt: 2, fontStyle: 'italic' }}
+        >
+          {data.economicImportance}
         </Typography>
       )}
 
