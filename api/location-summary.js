@@ -7,8 +7,9 @@ const locationData = {
       { name: 'Lithium', share: '18%' },
       { name: 'Gold', share: '10%' }
     ],
-    didYouKnow: 'Chile is home to the largest underground copper mine in the world.',
-    economicImportance: 'Mining contributes over 10% to Chile’s GDP and is a major source of export revenue.',
+    summary: 'Chile is a top global exporter of copper and lithium. Mining makes up over 10% of its GDP.',
+    didYouKnow: 'Chile holds over 50% of the world’s known lithium reserves.',
+    economicImportance: 'Mining contributes more than 10% to Chile’s GDP.',
     source: 'USGS & Chilean Mining Council'
   },
   Ohio: {
@@ -19,8 +20,9 @@ const locationData = {
       { name: 'Limestone', share: '25%' },
       { name: 'Salt', share: '15%' }
     ],
-    didYouKnow: 'Salt mining in Ohio dates back to Native American settlements and was critical in early American industry.',
-    economicImportance: 'Ohio’s mineral extraction supports regional manufacturing and construction industries.',
+    summary: 'Ohio has active extraction of coal and limestone, supporting regional construction and energy.',
+    didYouKnow: 'Ohio’s salt mines supply road salt used across the Midwest during winter.',
+    economicImportance: 'Mining supports thousands of jobs in the Ohio Valley region.',
     source: 'Ohio Geological Survey'
   }
 };
